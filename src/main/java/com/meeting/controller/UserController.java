@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +27,11 @@ import com.meeting.service.UserService;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	@Resource(name = "userServiceImpl")
+	@Autowired
 	private UserService userService;
-	@Resource(name = "departServiceImpl")
+	@Autowired
 	private DepartService departService;
-	@Resource(name = "roleServiceImpl")
+	@Autowired
 	private RoleService roleService;
 	
 	

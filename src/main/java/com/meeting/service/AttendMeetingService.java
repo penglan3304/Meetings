@@ -12,5 +12,6 @@ public interface AttendMeetingService {
 	public int add(int meetingid, int personid,User user);
 	public Object attendmeetinglist(int id,int start,int limit);
 	public int count(int meetingid);
+	public int  counts(int id);
 	public List<AttendMetting> attendlist(int meetingid);
 }

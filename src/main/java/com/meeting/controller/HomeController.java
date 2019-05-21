@@ -47,12 +47,12 @@ public class HomeController {
 	private UserMapper usermapper;
 	@Autowired
 	private UserRoleMapper userrolemapper;
-	@Resource(name = "meetingRoomServiceImpl")
+	@Autowired
 	private MeetingRoomService meetingroomService;
-	@Resource(name = "menuServiceImpl")
+	@Autowired
 	private MenuService menuService;
 	
-	@Resource(name = "meetingServiceImpl")
+	@Autowired
 	private MeetingService meetingService;
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)

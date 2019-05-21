@@ -150,7 +150,35 @@ layui.use(['tree','table','layer','form','upload'], function(){
         ]
         ,page: true
     });
-
+    function detail(id){
+   	 $.ajax({
+      		url: "${ctx}/meeting/detail.do?id="+id,
+      		type: "POST",
+      		dataType: "json",
+     		success: function(data){ 
+     				 layer.open({
+           			  type : 2,
+           		      title : "会议详情",
+           		      area: ['770px', '550px'],
+           		      btn: ['关闭'],
+           		      content : '${ctx}/meeting/detailshow.do',
+           		      yes: function(){   
+           		    	  layer.closeAll();
+           		      },
+           		      success: function(layero, index){
+           		    	    var body = layer.getChildFrame('body', index);
+           		    	    body.find('#meetingname').val(data.name);
+           		    	    body.find('#meetingroom').val(data.meetingroom);
+           		    	    body.find('#starttime').val(data.starttime);
+           		    	    body.find('#endtime').val(data.endtime);
+           		    	    body.find('#state').val(data.state);
+           		    	    body.find('#checkperson').val(data.checkperson);
+           		    	    body.find('#departname').val(data.departname);
+           		    	  }
+           		  });
+     			}
+   		  });
+   }
 function countTime() {  
 	 var date = new Date();  
     var now = date.getTime();
@@ -193,35 +221,7 @@ var t = time.getFullYear() + "-" + m + "-"
 show.innerHTML = t;  
 }, 1000); 
 };
-function detail(id){
-	 $.ajax({
-   		url: "${ctx}/meeting/detail.do?id="+id,
-   		type: "POST",
-   		dataType: "json",
-  		success: function(data){ 
-  				 layer.open({
-        			  type : 2,
-        		      title : "会议详情",
-        		      area: ['770px', '550px'],
-        		      btn: ['关闭'],
-        		      content : '${ctx}/meeting/detailshow.do',
-        		      yes: function(){   
-        		    	  layer.closeAll();
-        		      },
-        		      success: function(layero, index){
-        		    	    var body = layer.getChildFrame('body', index);
-        		    	    body.find('#meetingname').val(data.name);
-        		    	    body.find('#meetingroom').val(data.meetingroom);
-        		    	    body.find('#starttime').val(data.starttime);
-        		    	    body.find('#endtime').val(data.endtime);
-        		    	    body.find('#state').val(data.state);
-        		    	    body.find('#checkperson').val(data.checkperson);
-        		    	    body.find('#departname').val(data.departname);
-        		    	  }
-        		  });
-  			}
-		  });
-}
+
 
 window.onload = function() {
 	setInterval(function() { 

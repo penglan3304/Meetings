@@ -97,7 +97,7 @@ border:none; overflow:hidden; z-index:0; }
 								<li id="attended"><a title="已报名"  href="javascript:void(0);" style="font-size:16px">已报名</a></li>
 								<li id="publish"><a title="已发布"  href="javascript:void(0);" style="font-size:16px">已发布</a></li>
 								<li id="hasattend"><a title="已参加"  href="javascript:void(0);" style="font-size:16px">已参加</a></li>
-								<li id="checked"><a title="已审核"  href="javascript:void(0);" style="font-size:16px">已审核</a></li>
+								
 						</ul>
 				</div>
 			</div>
@@ -108,6 +108,7 @@ border:none; overflow:hidden; z-index:0; }
 								<li id="checkednopassshow"><a title="审核不通过"  href="javascript:void(0);" style="font-size:16px">审核不通过<span class="layui-badge">${nopasscount }</span></a></li>
 								<li id="information"><a title="实时会议信息"  href="javascript:void(0);" style="font-size:16px">实时会议信息</a></li>
 								<li id="listen"><a title="会议旁听"  href="javascript:void(0);" style="font-size:16px">会议旁听</a></li>
+								<li id="checked"><a title="已审核"  href="javascript:void(0);" style="font-size:16px">会议操作</a></li>
 						</ul>
 				</div>
 			</div>

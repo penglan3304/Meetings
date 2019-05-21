@@ -311,11 +311,11 @@ public class MeetingServiceImpl implements MeetingService{
 	   public PageResult checked(User user,String starttime,String endtime) {
 			String sql="";
 			if(!starttime.equals("")&&!endtime.equals("")) {
-				sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state='审核通过' and a.createname="+"'"+user.getUsername()+"'"
+				sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state!='待审核' and a.state!='审核不通过' and a.createname="+"'"+user.getUsername()+"'"
 						+ " and unix_timestamp(a.starttime) between "+"'"+starttime+"' and "+"'"+endtime+"'"+" and unix_timestamp(a.endtime) between"+"'"+starttime+"'"
 						+ "  and "+"'"+endtime+"'";
 			}else{
-				sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state='审核通过' and a.createname="+"'"+user.getUsername()+"'";
+				sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state!='待审核' and a.state!='审核不通过' and a.createname="+"'"+user.getUsername()+"'";
 			}
 			List<Meeting> checked=meetingmapper.selectBySql(sql);
 			

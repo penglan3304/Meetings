@@ -65,6 +65,13 @@ public class AttendMeetingServiceImpl implements AttendMeetingService{
 		return datasource;
 	}
 	
+	public int  counts(int id) {
+		
+	   String sql="select * from attendmeeting where signtime!='' and meetingid="+id;
+	   int count=attendmapper.selectBySql(sql).size();
+		return count;
+	}
+	
 	public AttendMetting detail(int meetingid,int personid) {
 		AttendMetting meeting=attendmapper.select(meetingid, personid);
 		return meeting;

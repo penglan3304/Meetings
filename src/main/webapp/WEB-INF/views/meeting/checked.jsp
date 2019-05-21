@@ -63,10 +63,14 @@ layui.use(['laydate','form'], function(){
         <a class="layui-btn layui-btn-xs" lay-event="startsign">开始签到</a>
        {{#  }  }}
       
-       {{#  if((d.state==='审核通过')&&(new Date(d.starttime)>new Date()) ) { }}
+       {{#  if((d.state==='审核通过')&&(new Date(d.starttime)<new Date())&&(d.state!=='正进行') ) { }}
         <a class="layui-btn layui-btn-xs" lay-event="startmeeting">开始会议</a>
-        <a class="layui-btn layui-btn-xs" lay-event="endmeeting">结束会议</a>
+       
        {{#  }  }}
+
+        {{#  if((d.state==='正进行')) { }}
+            <a class="layui-btn layui-btn-xs" lay-event="endmeeting">结束会议</a>
+        {{#  }  }}
       </script>
 <script>
     layui.use(['tree','table','layer','form','upload'], function(){
@@ -135,15 +139,15 @@ layui.use(['laydate','form'], function(){
             ,cols: [
                 [
                 	{checkbox: true}
-                    ,{field:'name', title:'会议名称',height:38}
-                    ,{field:'meetingroom', title:'会议室',height:38}
-                    ,{field:'starttime', title:'开始时间',height:38}
-                    ,{field:'endtime', title:'结束时间',height:38}
-                    ,{field:'createtime', title:'创建时间',height:38}
-                    ,{field:'modifytime', title:'修改时间',height:38}
-                    ,{field:'state', title:'状态 ',height:38}
-                    ,{field:'createname', title:'创建人',height:38}
-                    ,{field:'isanother', title:'是否允许旁听',height:38}
+                    ,{field:'name', title:'会议名称',height:38,width:100}
+                    ,{field:'meetingroom', title:'会议室',height:38,width:100}
+                    ,{field:'starttime', title:'开始时间',height:38,width:100}
+                    ,{field:'endtime', title:'结束时间',height:38,width:100}
+                    ,{field:'createtime', title:'创建时间',height:38,width:100}
+                    ,{field:'modifytime', title:'修改时间',height:38,width:100}
+                    ,{field:'state', title:'状态 ',height:38,width:100}
+                    ,{field:'createname', title:'创建人',height:38,width:100}
+                    ,{field:'isanother', title:'是否允许旁听',height:38,width:100}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo',width:280}
                 ]
             ]
@@ -200,14 +204,14 @@ layui.use(['laydate','form'], function(){
                 		dataType: "json",
                		success: function(data){
                		 if(data==0){
-      				   layer.alert('修改成功',function(index){
-      					   window.parent.location.reload();
+      				   layer.alert('开始会议',function(index){
+      					   location.reload();
       					   layer.closeAll();
       				   });
       			   }
       		   },
       		   error:function(){
-      			   layer.alert('修改出错',function(index){
+      			   layer.alert('出错',function(index){
       				   layer.closeAll();
       			   });
       		   }
@@ -221,14 +225,14 @@ layui.use(['laydate','form'], function(){
                 		dataType: "json",
                		success: function(data){
                			if(data==0){
-           				   layer.alert('修改成功',function(index){
-           					   window.parent.location.reload();
+           				   layer.alert('结束会议',function(index){
+           					   location.reload();
            					   layer.closeAll();
            				   });
            			   }
            		   },
            		   error:function(){
-           			   layer.alert('修改出错',function(index){
+           			   layer.alert('出错',function(index){
            				   layer.closeAll();
            			   });
            		   }

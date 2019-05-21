@@ -65,22 +65,22 @@ import com.meeting.utils.Zxing;
 @Controller
 @RequestMapping("/meeting")
 public class MeetingController {
-	@Resource(name = "meetingServiceImpl")
+	@Autowired
 	private MeetingService meetingService;
 
 	@Autowired
     private MailService maliService;
 	
-	@Resource(name = "meetingRoomServiceImpl")
+	@Autowired
 	private MeetingRoomService meetingroomService;
 	
-	@Resource(name = "userServiceImpl")
+	@Autowired
 	private UserService userService;
 	
-	@Resource(name = "departServiceImpl")
+	@Autowired
 	private DepartService departService;
 	
-	@Resource(name = "attendMeetingServiceImpl")
+	@Autowired
 	private AttendMeetingService attendmeetingService;
 	
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -226,6 +226,8 @@ public class MeetingController {
 		session.setAttribute("singmeetingid", meetingid);
 		int count=attendmeetingService.count(meetingid);
 		model.addAttribute("counts", count);
+		int count_=attendmeetingService.counts(meetingid);
+		model.addAttribute("count", count_);
 		return "meeting/signshow";
 	}
 	@RequestMapping(value = "/information", method = RequestMethod.GET)
@@ -317,7 +319,7 @@ public class MeetingController {
 		Integer start = (page - 1) * limit;
 		int meetingid=(int)session.getAttribute("singmeetingid");
 		//session.getAttribute("users");
-		Object pageResult =attendmeetingService.attendmeetinglist(meetingid, start, limit) ;
+		Object pageResult =attendmeetingService.attendmeetinglist(meetingid, start, limit);
 		return pageResult;
 	}
 	
@@ -619,27 +621,34 @@ public class MeetingController {
 	 
 	 @ResponseBody
 	 @RequestMapping(value = "/signstate")
-	 public int signstate(HttpSession session,String data) {
+	 public int signstate(HttpSession session,String data,Model model) {
 		    int result=0;
 		    String datas[]=data.split(",");
 		    if(datas.length==3) {
 		    	int id=(int)session.getAttribute("singmeetingid");
-				if(id==Integer.parseInt(datas[0])) {
-					User user=userService.detail(Integer.parseInt(datas[1]));
-					if(Integer.parseInt(datas[2])==0) {
+				if(id==Integer.parseInt(datas[0])) {                       //是否存在此会议
+					User user=userService.detail(Integer.parseInt(datas[1]));   //查询是否存在此用户
+					if(Integer.parseInt(datas[2])==0) {                         //非旁听
 						AttendMetting meeting=attendmeetingService.detail(Integer.parseInt(datas[0]), Integer.parseInt(datas[1]));
 						if(null!=meeting) {
+							
 							if(null!=user) {
-							  result=attendmeetingService.update(Integer.parseInt(datas[0]), Integer.parseInt(datas[1]));
+								if(meeting.getState().equals("已签到")) {
+								      result=5;
+								}
+								else {
+									result=attendmeetingService.update(Integer.parseInt(datas[0]), Integer.parseInt(datas[1]));
+								}
+							  
 							}
 							else
 								result=1;
 						}
 						else {
-							result=5;
+							result=2;
 						}
 			    	}
-					else if(Integer.parseInt(datas[2])==1) {
+					else if(Integer.parseInt(datas[2])==1) {                    //旁听
 						if(null!=user) {
 							  result=attendmeetingService.add(Integer.parseInt(datas[0]), Integer.parseInt(datas[1]),user);
 							}
@@ -670,6 +679,7 @@ public class MeetingController {
 		     if (image == null) {
 		       throw new Exception("cannot read image from inputstream.");
 		     }
+		     
 		     final LuminanceSource source = new BufferedImageLuminanceSource(image);
 		     final BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 		     final Map<DecodeHintType, String> hints = new HashMap<DecodeHintType, String>();
