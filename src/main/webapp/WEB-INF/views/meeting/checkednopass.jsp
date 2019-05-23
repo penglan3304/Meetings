@@ -202,9 +202,7 @@ layui.use(['laydate','form'], function(){
                   		    	  
                   		    	    
                   		    	    body.find('#departdiv').find("[lay-value='" +data.departs + "']").click();
-                  		    	    //form.render();
-                  		    	   // body.find('#checkpersondiv').find("[lay-value='" +data.userid + "']").click();
-                  		    	   // body.find('#placediv').find("[lay-value='" +data.meetingroomid + "']").click();
+                  		    	    body.find('#placediv').find("[lay-value='" +data.meetingroomid + "']").click();
                   		    	  
                   		    	  }
                   		  });

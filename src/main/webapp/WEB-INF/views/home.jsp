@@ -31,15 +31,17 @@ pageContext.setAttribute("ctx", path);
   </div>
   
   
-  <div style="float:right;margin-right:300px">
+  <div style="float:right;margin-right:200px">
   <ul >
       <li class="layui-nav-item"  style="float:left"><img src="<%=request.getContextPath()%>/img/logo.png" style="margin-right:560px"/> </li>
       <li class="layui-nav-item" id="first" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>首页</strong></a></li>
       <!-- <li class="layui-nav-item" id="chatinfo" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>实时聊天</strong></a></li> -->
+      
       <li class="layui-nav-item" id="meetinginfo" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>会议信息管理</strong></a></li>
       <li class="layui-nav-item" id="meetingManage" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>会议管理</strong></a></li>
       <li class="layui-nav-item" id="userManage" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>用户管理</strong></a></li>
       <li class="layui-nav-item" id="meetingRoom" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>会议室管理</strong></a></li>
+      <li class="layui-nav-item" id="comment" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>评论墙</strong></a></li>
     <!--   <li class="layui-nav-item" id="systemManage" style="float:left">
         <a href="javascript:void(0);" style="margin-left:40px;font-size:25px;color:blue">系统管理</a>
         <dl class="layui-nav-child">
@@ -98,7 +100,10 @@ $('#meetingManage').on('click',function(){
 	  $(this).addClass('layui-this').siblings().removeClass('layui-this');
 	  });
 
-
+$('#comment').on('click',function(){
+	 $('#contentIframe').attr('src','${ctx}/meeting/commentshow.do');
+	  $(this).addClass('layui-this').siblings().removeClass('layui-this');
+	  });
 
 $('#meetinginfo').on('click',function(){
 	 $('#contentIframe').attr('src','${ctx}/welcome.do');

@@ -59,8 +59,10 @@ layui.use(['laydate','form'], function(){
 </script>
 <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+        {{#  if(d.state==='审核通过'){ }}
         <a class="layui-btn layui-btn-xs" lay-event="attend">报名</a>
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="absent">请假</a>
+        {{#  }  }}
       </script>
 <script>
     layui.use(['tree','table','layer','form','upload'], function(){
@@ -186,7 +188,10 @@ layui.use(['laydate','form'], function(){
 	        	       		type: "POST",
 	        	       		dataType: "json",
 	        	      			success: function(data){  
-	        	      				location.reload();
+	        	      				if(data==0){
+	        	      					location.reload();
+	        	      				}
+	        	      				
 	        	      			}
 	           			});
 	          	   }

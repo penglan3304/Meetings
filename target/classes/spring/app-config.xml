@@ -10,19 +10,19 @@
      
 	<context:property-placeholder location="classpath:jdbc.properties" ignore-unresolvable="true"/>
 
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="${c3p0.master1.driverClass}" />
-		<property name="jdbcUrl" value="${c3p0.master1.jdbcUrl}" />
-		<property name="user" value="${c3p0.master1.username}" />
-		<property name="password" value="${c3p0.master1.password}" />
-		<property name="initialPoolSize" value="${c3p0.master1.initialPoolSize}" />
-		<property name="minPoolSize" value="${c3p0.master1.minPoolSize}" />
-		<property name="maxPoolSize" value="${c3p0.master1.maxPoolSize}" />
-		<property name="acquireIncrement" value="${c3p0.master1.acquireIncrement}" />
-		<property name="maxIdleTime" value="${c3p0.master1.maxIdleTime}" />
-		<property name="maxStatements" value="${c3p0.master1.maxStatements}" />
-		<property name="checkoutTimeout" value="${c3p0.master1.checkoutTimeout}" />
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"      destroy-method="close">    
+		<property name="driverClass" value="${c3p0.master1.driverClass}"/>    
+		<property name="jdbcUrl" value="${c3p0.master1.jdbcUrl}"/>    
+		<property name="user" value="${c3p0.master1.username}"/>    
+		<property name="password" value="${c3p0.master1.password}"/>    
+		<property name="initialPoolSize" value="${c3p0.master1.initialPoolSize}"/>    
+		<property name="minPoolSize" value="${c3p0.master1.minPoolSize}"/>    
+		<property name="maxPoolSize" value="${c3p0.master1.maxPoolSize}"/>    
+		<property name="acquireIncrement" value="${c3p0.master1.acquireIncrement}"/>    
+		<property name="maxIdleTime" value="${c3p0.master1.maxIdleTime}"/>    
+		<property name="maxStatements" value="${c3p0.master1.maxStatements}"/>    
+		<property name="testConnectionOnCheckin" value="${c3p0.testConnectionOnCheckin}"/>    
+		<property name="testConnectionOnCheckout" value="${c3p0.testConnectionOnCheckout}"/>
 	</bean>
 	
 	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->

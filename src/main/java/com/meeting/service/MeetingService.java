@@ -48,5 +48,6 @@ public interface MeetingService {
 	public Meeting meeting(int id);
 	public Object hasattended(User user,String starttime,String endtime);
 	public MeetingParam meetingparam(int meetingid);
+	public PageResult comment(int start, int limit );
 
 }

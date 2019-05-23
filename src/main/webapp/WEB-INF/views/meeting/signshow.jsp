@@ -22,8 +22,9 @@
 <script src="${urlPath}/layui/layui.js"></script>
 <body>
 <video id="video" autoplay style="display: block;margin:1em auto;width:400px;height:400px;"></video>
+<div style="text-align:center">
 <span id="msgs"></span>
-<div style="text-align:center">应到：<span >${counts }</span>人
+应到：<span >${counts }</span>人
 实到：<span id="msg">${count }</span>人</div>
  <table  style="margin:0px 0" id="attdlist" lay-filter="attdlist"></table>
 <script>
@@ -104,23 +105,23 @@
     		    	  if(data==0){
     		    		  var count=$("#msg").val();
     		    		  count++;
-    		    		  $("#msgs").html("<div style='font-size:20px;color:red;margin-left:300px'>签到成功</div>");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>签到成功</div>");
     		    		  $("#msg").val(count);
     		    	  }
     		    	  if(data==1){
-    		    		  $("#msgs").html("<div style='font-size:20px;color:red;margin-left:300px'>无此用户</div>");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>无此用户</div>");
     		    	  }
     		    	  if(data==2){
-    		    		  $("#msgs").html("<div style='font-size:20px;color:red;margin-left:300px'>参会错误</div>");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>参会错误</div>");
     		    	  }
     		    	  if(data==3){
-    		    		  $("#msgs").html("<div style='font-size:20px;color:red;margin-left:300px'>二维码错误</div>");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>二维码错误</div>");
     		    	  }
     		    	  if(data==4){
-    		    		  $("#msgs").html("<div style='font-size:20px;color:red;margin-left:300px'>欢迎旁听</div>");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>欢迎旁听</div>");
     		    	  }
     		    	  if(data==5){
-    		    		  $("#msgs").html("<div style='font-size:20px;color:red;margin-left:300px'>请勿重复签到</div>");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>请勿重复签到</div>");
     		    	  }
     		      }
     	   });

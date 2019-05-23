@@ -260,10 +260,10 @@ public class HomeController {
 					{
 						userCookie.setMaxAge(0);	   
 					}
-					userCookie.setPath("/");
+					/*userCookie.setPath("/");
 			        res.addCookie(userCookie);
-                    List<Menu> menu=menuService.listMenu();
-			        session.setAttribute("mainmenus", menu);
+                    List<Menu> menu=menuService.listMenu();*/
+			        //session.setAttribute("mainmenus", menu);
 			        session.setAttribute("currentUser", users.get(0).getUsername());
 			        session.setAttribute("users",users.get(0) );
 			        session.setAttribute("userid",users.get(0).getId() );

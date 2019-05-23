@@ -124,11 +124,8 @@ layui.use(['laydate','form','layer',], function(){
                  type: "post",
                  async: false,
                  success: function(data) {
-                    /* var jsonData = $.parseJSON(data);
-                     */
                      var jsonData=data;
                      var count = jsonData.count;
-                     
                      if (count != 0) {
                          var empList = jsonData.data;
                          var selectEmpHTML = "";

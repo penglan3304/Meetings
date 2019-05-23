@@ -23,26 +23,7 @@ pageContext.setAttribute("ctx", path);
     </div>
   </div>
   
-  <div class="layui-form-item">
-      <label class="layui-form-label">会议地点</label>
-      <div class="layui-input-inline" style="width:200px" id="placediv">
-        <select  id="place"  lay-verify="required" lay-filter="place" lay-search="">
-          <option value="">直接选择或搜索选择</option>
-           <c:forEach var="list" items="${meetingroomlist }">
-                <c:choose>
-				   <c:when test="${list.id == meeting.meetingroomid }">
-				     <option value='${list.id}' selected>${list.name}</option>
-				   </c:when>
-				   
-				   <c:otherwise> 
-				      <option value='${list.id}'>${list.name}</option>
-				   </c:otherwise>
-				</c:choose>
-              
-           </c:forEach>
-        </select>
-      </div>
-    </div>
+ 
     
     <div class="layui-form-item">
       <label class="layui-form-label">参会部门</label>
@@ -95,6 +76,23 @@ pageContext.setAttribute("ctx", path);
         <input type="text" class="layui-input" id="endtime" style="margin-right:560px">
       </div>
  </div>
+ 
+ 
+  <div class="layui-form-item">
+      <label class="layui-form-label">会议地点</label>
+      <div class="layui-input-inline" style="width:200px" id="placediv">
+        <select  id="place"  lay-verify="required" lay-filter="place" lay-search="">
+          <option value="">直接选择或搜索选择</option>
+           <c:forEach var="list" items="${meetingroomlist }">
+                <c:if test="${list.id == meeting.meetingroomid }">
+				     <option value='${list.id}' selected>${list.name}</option>
+				</c:if>
+				   
+              
+           </c:forEach>
+        </select>
+      </div>
+    </div>
   
  <div class="layui-form-item">
     <label class="layui-form-label">会议审核人</label>
@@ -134,6 +132,34 @@ layui.use(['laydate','form','layer'], function(){
   laydate.render({
     elem: '#endtime'
     ,type: 'datetime'
+    	,done: function(value, date, endDate){
+        	var starttime=$("#starttime").val();
+        	var endtime=value;
+        	 $.ajax({
+                 url: "${ctx}/meetingroom/selectmeeting.do?starttime="+starttime+"&endtime="+endtime,
+                 type: "post",
+                 async: false,
+                 success: function(data) {
+                     var jsonData=data;
+                     var count = jsonData.count;
+                     if (count != 0) {
+                         var empList = jsonData.data;
+                         var selectEmpHTML = "";
+                         $.each(empList,function(index,value){
+                             var name = value.name;
+                             var optionHTML = "<option value='" + value.id + "'>" + name + "</option>";
+                             selectEmpHTML = selectEmpHTML + optionHTML;
+                         });
+                         $("#place").append(selectEmpHTML);
+                     } 
+                     else{
+                    	 layer.alert("无可用会议室"); 
+                     } 
+                     form.render('select');   
+                     }
+             });
+        	  
+        }
   });
   
 

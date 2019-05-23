@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -49,12 +48,14 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.meeting.pojo.AddMeeting;
 import com.meeting.pojo.AttendMetting;
+import com.meeting.pojo.Comment;
 import com.meeting.pojo.Depart;
 import com.meeting.pojo.Meeting;
 import com.meeting.pojo.MeetingParam;
 import com.meeting.pojo.MeetingRoom;
 import com.meeting.pojo.User;
 import com.meeting.service.AttendMeetingService;
+import com.meeting.service.CommentService;
 import com.meeting.service.DepartService;
 import com.meeting.service.MailService;
 import com.meeting.service.MeetingRoomService;
@@ -82,6 +83,9 @@ public class MeetingController {
 	
 	@Autowired
 	private AttendMeetingService attendmeetingService;
+	
+	@Autowired
+	private CommentService commentService;
 	
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public String index(HttpServletRequest request, HttpServletResponse response) 
@@ -155,7 +159,68 @@ public class MeetingController {
 		return pageResult;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/comment")
+	public Object comment(@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "limit", defaultValue = "10")int limit,Model model, HttpSession session) {
+		Integer start = (page - 1) * limit;
+		//session.getAttribute("users");
+		Object pageResult = meetingService.comment(start,limit);
+		return pageResult;
+	}
 	
+	
+	//评论墙
+	@RequestMapping(value = "/commentshow", method = RequestMethod.GET)
+	public String commentshow(HttpServletRequest request, HttpServletResponse response) 
+	{
+		return "meeting/commentshow";
+	}
+	
+	//评论墙详情
+	@RequestMapping(value = "/commentdetail")
+	public String commentshow(int id,Model model,HttpSession session) 
+	{
+		User user=(User)session.getAttribute("users");
+		List<Comment> comments=commentService.comment(id);
+	
+//		List<Meeting> meeting=meetingService.detail(id);
+//		if(meeting.size()!=0) {
+//			if(meeting.get(0).getCreatename().equals(user.getUsername())) {
+//				model.addAttribute("flag", 0);
+//			}
+//			else {
+//				model.addAttribute("flag", 1);
+//			}
+//		}
+//		else {
+//			model.addAttribute("flag", 1);
+//		}
+		model.addAttribute("comments", comments);
+		model.addAttribute("length", comments.size());
+		model.addAttribute("id", id);
+		model.addAttribute("name", user.getUsername());
+		return "comment/commentdetail";
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/addcomment")
+	public int addcomment(String content,HttpSession session,int meetingid,int replayid) 
+	{
+		User user=(User)session.getAttribute("users");
+		int result=commentService.add(meetingid, content, user,replayid);
+		return result;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/delcomment")
+	public int delcomment(int id) 
+	{
+		int result=commentService.del(id);
+		return result;
+	}
 	
 	@RequestMapping(value = "/checkednopassshow", method = RequestMethod.GET)
 	public String checkednopassshow(HttpServletRequest request, HttpServletResponse response) 
@@ -247,7 +312,7 @@ public class MeetingController {
 	public String nopassedit(HttpServletRequest request, HttpServletResponse response,Model model
 			                  ,Integer meetingroomid,String meetingroom,Integer id) 
 	{
-		List<MeetingRoom> meetingroomlist=meetingroomService.meetingroomlist();
+		List<MeetingRoom> meetingroomlist=meetingroomService.meetingroom();
 		List<User> userlist=userService.userlist();
 		List<Depart> departlist=departService.list();
 		model.addAttribute("meetingroomlist", meetingroomlist);

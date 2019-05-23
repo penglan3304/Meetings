@@ -82,8 +82,9 @@ public class MeetingServiceImpl implements MeetingService{
 		String sqls="";
 		if(!starttime.equals("")&&!endtime.equals("")) {
 			sqls="select a.*,b.name as meetingroom from meeting a,meetingroom b WHERE a.meetingroomid=b.id and "
-					+ "unix_timestamp(a.starttime) between "+"'"+starttime+"' and "+"'"+endtime+"'"+" and unix_timestamp(a.endtime) between"+"'"+starttime+"'"
-					+ "  and "+"'"+endtime+"'"+" order by id asc";
+					+ "unix_timestamp(a.starttime) between "+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"
+					+" and unix_timestamp(a.endtime) between "+"unix_timestamp('"+starttime+"')"
+					+ "  and "+"unix_timestamp('"+endtime+"')"+" order by id asc";
 		}
 		else{
 			sqls="select a.*,b.name as meetingroom from meeting a,meetingroom b WHERE a.meetingroomid=b.id order by a.id asc";
@@ -98,7 +99,8 @@ public class MeetingServiceImpl implements MeetingService{
 	}
 	
 	public List<Meeting> information(){
-		String sql="select a.*,b.name as meetingroom from meeting a,meetingroom b WHERE a.meetingroomid=b.id order by unix_timestamp(a.starttime) asc";
+		String sql="select a.*,b.name as meetingroom from meeting a,meetingroom b WHERE a.meetingroomid=b.id order "
+				+ "by unix_timestamp(a.starttime) asc";
 		List<Meeting> meeting=meetingmapper.selectBySql(sql);
 		return meeting;
 	}
@@ -121,7 +123,9 @@ public class MeetingServiceImpl implements MeetingService{
 	
 	@Override
 	public List<Meeting> detail(int id) {
-		String sql="select a.*,b.username as checkperson,d.name as meetingroom,c.departs  from meeting a,users b,meetingparam c,meetingroom d WHERE a.id="+id+" and c.meetingid=a.id and c.userid=b.id and a.meetingroomid=d.id";
+		String sql="select a.*,b.username as checkperson,d.name as meetingroom,c.departs  from "
+				+ "meeting a,users b,meetingparam c,meetingroom d WHERE a.id="+id+" and c.meetingid=a.id and "
+						+ "c.userid=b.id and a.meetingroomid=d.id";
 		List<Meeting> meetings=meetingmapper.selectBySql(sql);
 		List<Depart> departs=departmapper.selectBySql("select * from depart");
 		Map<Integer,String> departMap=departs.stream().collect(Collectors.toMap(Depart::getId,Depart::getName));
@@ -138,7 +142,8 @@ public class MeetingServiceImpl implements MeetingService{
 		if(notifys.size()>0) {
 			for(int i=0;i<notifys.size();i++) {
 				String sql="select a.*,b.name as meetingroom from meeting a,meetingroom b,meetingparam c "
-						+ "where a.id=c.meetingid and b.id=a.meetingroomid and a.id="+notifys.get(i).getMeetingid()+" and c.userid="+user.getId()+" and a.state='待审核'";
+						+ "where a.id=c.meetingid and b.id=a.meetingroomid and a.id="+notifys.get(i).getMeetingid()+" "
+								+ "and c.userid="+user.getId()+" and a.state='待审核'";
 				List<Meeting> meetings=meetingmapper.selectBySql(sql);
 				if(meetings.size()!=0) {
 					meeting.add(meetings.get(0));
@@ -230,8 +235,9 @@ public class MeetingServiceImpl implements MeetingService{
 			for(int i=0;i<meetingparam.size();i++) {
 				String sql="select a.*,d.name as meetingroom,c.departs  from meeting a,users b,meetingparam c,meetingroom d "
 						+ "WHERE a.id="+meetingparam.get(i).getMeetingid()+ " and c.meetingid=a.id and c.userid=b.id and a.meetingroomid=d.id and a.state='待审核'"
-								+ " and unix_timestamp(a.starttime) between "+"'"+starttime+"' and "+"'"+endtime+"'"+" and unix_timestamp(a.endtime) between"+"'"+starttime+"'"
-								+ "  and "+"'"+endtime+"'"; 
+								+ " and unix_timestamp(a.starttime) between "
+						+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(a.endtime) between"+"unix_timestamp('"+starttime+"')"
+								+ "  and "+"unix_timestamp('"+endtime+"')"; 
 				if(null!=meetingmapper.selectBySql(sql)&&meetingmapper.selectBySql(sql).size()!=0) {
 				    waitcheck.add(meetingmapper.selectBySql(sql).get(0));
 				}
@@ -259,8 +265,10 @@ public class MeetingServiceImpl implements MeetingService{
 		String sql="";
 		if(!starttime.equals("")&&!endtime.equals("")) {
 			sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state='待审核' and a.createname="+"'"+user.getUsername()+"'"
-					+ " and unix_timestamp(a.starttime) between "+"'"+starttime+"' and "+"'"+endtime+"'"+" and unix_timestamp(a.endtime) between"+"'"+starttime+"'"
-					+ "  and "+"'"+endtime+"'";
+					+ " and unix_timestamp(a.starttime) between "
+					+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" "
+							+ "and unix_timestamp(a.endtime) between"+" unix_timestamp('"+starttime+"')"
+					+ "  and "+"unix_timestamp('"+endtime+"')";
 		}else{
 			sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state='待审核' and a.createname="+"'"+user.getUsername()+"'";
 		}
@@ -312,8 +320,10 @@ public class MeetingServiceImpl implements MeetingService{
 			String sql="";
 			if(!starttime.equals("")&&!endtime.equals("")) {
 				sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state!='待审核' and a.state!='审核不通过' and a.createname="+"'"+user.getUsername()+"'"
-						+ " and unix_timestamp(a.starttime) between "+"'"+starttime+"' and "+"'"+endtime+"'"+" and unix_timestamp(a.endtime) between"+"'"+starttime+"'"
-						+ "  and "+"'"+endtime+"'";
+						+ " and unix_timestamp(a.starttime) between "
+						+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(a.endtime) "
+								+ "between "+"unix_timestamp('"+starttime+"')"
+						+ "  and "+"unix_timestamp('"+endtime+"')";
 			}else{
 				sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state!='待审核' and a.state!='审核不通过' and a.createname="+"'"+user.getUsername()+"'";
 			}
@@ -329,7 +339,16 @@ public class MeetingServiceImpl implements MeetingService{
 	
 	
 	
-	
+	   public PageResult comment(int start, int limit ) {
+				String sql="select a.*,b.name as meetingroom from meeting a, meetingroom b where a.state='已结束' and a.meetingroomid=b.id";
+				List<Meeting> meeting=meetingmapper.selectByCondition(sql, start, limit);
+				PageResult pageresult=new PageResult();
+				pageresult.setCode(0);
+				pageresult.setMsg("");
+				pageresult.setCount(meeting.size());
+				pageresult.setData(meeting);
+				return pageresult;
+			}
 	
 	
 
@@ -351,8 +370,10 @@ public class MeetingServiceImpl implements MeetingService{
 			String sql="";
 			if(!starttime.equals("")&&!endtime.equals("")) {
 				sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.createname="+"'"+user.getUsername()+"'"
-						+ " and unix_timestamp(a.starttime) between "+"'"+starttime+"' and "+"'"+endtime+"'"+" and unix_timestamp(a.endtime) between"+"'"+starttime+"'"
-						+ "  and "+"'"+endtime+"'";
+						+ " and unix_timestamp(a.starttime) between "
+						+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"
+						+" and unix_timestamp(a.endtime) between "+"unix_timestamp('"+starttime+"')"
+						+ "  and "+"unix_timestamp('"+endtime+"')";
 			}else{
 				sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.createname="+"'"+user.getUsername()+"'";
 			}
@@ -376,9 +397,11 @@ public class MeetingServiceImpl implements MeetingService{
 	public Map<String,Object> nosign(User user) {
 		List<AttendMetting> attendmeeting=attendmeetingmapper.selectBypersonId(user.getId());
 		List<Meeting> nosign=new ArrayList<Meeting>();
-		for(int i=0;i<attendmeeting.size();i++) {
-			if(attendmeeting.get(i).getState().equals("未报名")) {
-				nosign.add(meetingmapper.selectById(attendmeeting.get(i).getMeetingid()));
+		if(attendmeeting.size()!=0) {
+			for(int i=0;i<attendmeeting.size();i++) {
+				if(attendmeeting.get(i).getState().equals("未报名")) {
+					nosign.add(meetingmapper.selectById(attendmeeting.get(i).getMeetingid()));
+				}
 			}
 		}
 		Map<String,Object> datasource=new LinkedHashMap<String,Object>();
@@ -394,31 +417,39 @@ public class MeetingServiceImpl implements MeetingService{
 		List<AttendMetting> attendmeeting=attendmeetingmapper.selectBypersonId(user.getId());
 		List<Meeting> signed=new ArrayList<Meeting>();
 		List<Meeting> signeds=new ArrayList<Meeting>();
-		for(int i=0;i<attendmeeting.size();i++) {
-			if(attendmeeting.get(i).getState().equals("已报名")) {
-				signed.add(meetingmapper.selectById(attendmeeting.get(i).getMeetingid()));
-				if(new Date(signed.get(i).getStarttime()).getTime()>new Date().getTime()) {
-					signeds.add(signed.get(i));
+		Map<String,Object> datasource=new LinkedHashMap<String,Object>();
+		if(attendmeeting.size()!=0) {
+			for(int i=0;i<attendmeeting.size();i++) {
+				if(attendmeeting.get(i).getState().equals("已报名")) {
+					signed.add(meetingmapper.selectById(attendmeeting.get(i).getMeetingid()));
+					if(new Date(signed.get(i).getStarttime()).getTime()>new Date().getTime()) {
+						signeds.add(signed.get(i));
+					}
 				}
 			}
-		}
-		if(flag==0) {
-			Map<String,Object> datasource=new LinkedHashMap<String,Object>();
-	        datasource.put("code",0);
-	        datasource.put("msg","");
-	        datasource.put("count",signed.size());
-	        datasource.put("data",signed);
-			return datasource;
+			if(flag==0) {
+				
+		        datasource.put("code",0);
+		        datasource.put("msg","");
+		        datasource.put("count",signed.size());
+		        datasource.put("data",signed);
+				
+			}
+			else {
+		        datasource.put("code",0);
+		        datasource.put("msg","");
+		        datasource.put("count",signeds.size());
+		        datasource.put("data",signeds);
+			}
 		}
 		else {
-			Map<String,Object> datasource=new LinkedHashMap<String,Object>();
-	        datasource.put("code",0);
+			datasource.put("code",0);
 	        datasource.put("msg","");
 	        datasource.put("count",signeds.size());
 	        datasource.put("data",signeds);
-			return datasource;
 		}
 		
+		return datasource;
 	}
 	
 	
@@ -491,21 +522,25 @@ public class MeetingServiceImpl implements MeetingService{
 		List<AttendMetting> attendmeeting=attendmeetingmapper.selectByState(user.getId(), "未报名");
 		List<Meeting> meetings=new ArrayList<Meeting>();
 		String sql="";
-		for(int i=0;i<attendmeeting.size();i++) {
-			if(!starttime.equals("")&&!endtime.equals("")) {
-					sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()
-						+ " and unix_timestamp(a.starttime) between "+"'"+starttime+"' and "+"'"+endtime+"'"+" and unix_timestamp(a.endtime) between"+"'"+starttime+"'"
-						+ "  and "+"'"+endtime+"'";
+		if(attendmeeting.size()!=0) {
+			for(int i=0;i<attendmeeting.size();i++) {
+				if(!starttime.equals("")&&!endtime.equals("")) {
+						sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()
+							+ " and unix_timestamp(a.starttime) between "+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"
+								+" and unix_timestamp(a.endtime) between"+"unix_timestamp('"+starttime+"')"
+							+ "  and "+"unix_timestamp('"+endtime+"')";
+					
+				}
+				else {
+					sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid();
+				}
+				if(meetingmapper.selectBySql(sql).size()!=0) {
+					meetings.add(meetingmapper.selectBySql(sql).get(0));
+				}
 				
 			}
-			else {
-				sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid();
-			}
-			if(meetingmapper.selectBySql(sql).size()!=0) {
-				meetings.add(meetingmapper.selectBySql(sql).get(0));
-			}
-			
 		}
+		
 		PageResult pageresult=new PageResult();
 		pageresult.setCode(0);
 		pageresult.setMsg("");
@@ -520,18 +555,22 @@ public class MeetingServiceImpl implements MeetingService{
 		List<AttendMetting> attendmeeting=attendmeetingmapper.selectByState(user.getId(), "请假");
 		List<Meeting> meetings=new ArrayList<Meeting>();
 		String sql="";
-		for(int i=0;i<attendmeeting.size();i++) {
-			if(!starttime.equals("")&&!endtime.equals("")) {
-					sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()
-						+ " and unix_timestamp(a.starttime) between "+"'"+starttime+"' and "+"'"+endtime+"'"+" and unix_timestamp(a.endtime) between"+"'"+starttime+"'"
-						+ "  and "+"'"+endtime+"'";
-				
-			}
-			else {
-				sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid();
-			}
-			if(meetingmapper.selectBySql(sql).size()!=0) {
-				meetings.add(meetingmapper.selectBySql(sql).get(0));
+		if(attendmeeting.size()!=0) {
+			for(int i=0;i<attendmeeting.size();i++) {
+				if(!starttime.equals("")&&!endtime.equals("")) {
+						sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()
+							+ " and unix_timestamp(a.starttime) between "
+								+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(a.endtime) between "
+							+"unix_timestamp('"+starttime+"')"
+							+ "  and "+"unix_timestamp('"+endtime+"')";
+					
+				}
+				else {
+					sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid();
+				}
+				if(meetingmapper.selectBySql(sql).size()!=0) {
+					meetings.add(meetingmapper.selectBySql(sql).get(0));
+				}
 			}
 		}
 		PageResult pageresult=new PageResult();
@@ -548,20 +587,25 @@ public class MeetingServiceImpl implements MeetingService{
 		List<AttendMetting> attendmeeting=attendmeetingmapper.selectByState(user.getId(), "已报名");
 		List<Meeting> meetings=new ArrayList<Meeting>();
 		String sql="";
-		for(int i=0;i<attendmeeting.size();i++) {
-			if(!starttime.equals("")&&!endtime.equals("")) {
-					sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()
-						+ " and unix_timestamp(a.starttime) between "+"'"+starttime+"' and "+"'"+endtime+"'"+" and unix_timestamp(a.endtime) between"+"'"+starttime+"'"
-						+ "  and "+"'"+endtime+"'";
-				
-			}
-			else {
-				sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid();
-			}
-			if(meetingmapper.selectBySql(sql).size()!=0) {
-				meetings.add(meetingmapper.selectBySql(sql).get(0));
+		if(attendmeeting.size()!=0) {
+			for(int i=0;i<attendmeeting.size();i++) {
+				if(!starttime.equals("")&&!endtime.equals("")) {
+						sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()
+							+ " and unix_timestamp(a.starttime) between "
+								+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(a.endtime) between "
+							+"unix_timestamp('"+starttime+"')"
+							+ "  and "+"unix_timestamp('"+endtime+"')";
+					
+				}
+				else {
+					sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid();
+				}
+				if(meetingmapper.selectBySql(sql).size()!=0) {
+					meetings.add(meetingmapper.selectBySql(sql).get(0));
+				}
 			}
 		}
+		
 		Map<String,Object> datasource=new LinkedHashMap<String,Object>();
         datasource.put("code",0);
         datasource.put("msg","");
@@ -572,21 +616,25 @@ public class MeetingServiceImpl implements MeetingService{
 	
 	//已参加会议
 	public Object hasattended(User user,String starttime,String endtime) {
-		List<AttendMetting> attendmeeting=attendmeetingmapper.selectByState(user.getId(), "已报名");
+		List<AttendMetting> attendmeeting=attendmeetingmapper.selectByState(user.getId(), "已签到");
 		List<Meeting> meetings=new ArrayList<Meeting>();
 		String sql="";
-		for(int i=0;i<attendmeeting.size();i++) {
-			if(!starttime.equals("")&&!endtime.equals("")) {
-					sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()+" and state='已结束'"
-						+ " and unix_timestamp(a.starttime) between "+"'"+starttime+"' and "+"'"+endtime+"'"+" and unix_timestamp(a.endtime) between"+"'"+starttime+"'"
-						+ "  and "+"'"+endtime+"'";
-				
-			}
-			else {
-				sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()+" and state='已结束'";
-			}
-			if(meetingmapper.selectBySql(sql).size()!=0) {
-				meetings.add(meetingmapper.selectBySql(sql).get(0));
+		if(attendmeeting.size()!=0) {
+			for(int i=0;i<attendmeeting.size();i++) {
+				if(!starttime.equals("")&&!endtime.equals("")) {
+						sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()+" and state='已结束'"
+							+ " and unix_timestamp(a.starttime) between "
+								+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(a.endtime) between "
+							+"unix_timestamp('"+starttime+"')"
+							+ "  and "+"unix_timestamp('"+endtime+"')";
+					
+				}
+				else {
+					sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()+" and state='已结束'";
+				}
+				if(meetingmapper.selectBySql(sql).size()!=0) {
+					meetings.add(meetingmapper.selectBySql(sql).get(0));
+				}
 			}
 		}
 		Map<String,Object> datasource=new LinkedHashMap<String,Object>();
@@ -610,13 +658,46 @@ public class MeetingServiceImpl implements MeetingService{
 	
 	public int meetingstate(int id,int fg) {
 		Meeting meeting=meetingmapper.selectById(id);
+		List<MeetingRoom> meetingroom=null;
+		List<Meeting> meetings=null;
+		int counta=0;
+		int countb=0;
+		if(null!=meeting) {
+			meetingroom=meetingroommapper.selectById(meeting.getMeetingroomid());
+			meetings=meetingmapper.selectBymeetingroomid(meeting.getMeetingroomid());
+			for(int i=0;i<meetings.size();i++)
+			{
+				if(meetings.get(i).getState().equals("已结束")) {
+					counta++;
+				}
+				if(meetings.get(i).getState().equals("正进行")) {
+					countb++;
+				}
+			}
+		}
 		if(fg==0) {
 			meeting.setState("正进行");
+			meetingroom.get(0).setState("使用中");
+			meetingroommapper.update(meetingroom.get(0));
 		}
 		if(fg==1) {
 			meeting.setState("已结束");
+			if(counta==meetings.size()) {
+				meetingroom.get(0).setState("空闲");
+				meetingroommapper.update(meetingroom.get(0));
+			}
+			else if(countb>0) {
+				meetingroom.get(0).setState("使用中");
+				meetingroommapper.update(meetingroom.get(0));
+			}
+			else {
+				meetingroom.get(0).setState("已预定");
+				meetingroommapper.update(meetingroom.get(0));
+			}
 		}
 		meetingmapper.update(meeting);
+		
+		
 		return 0;
 	}
 	/*public void QRCodeInit(String content,HttpServletResponse response) throws WriterException, IOException {

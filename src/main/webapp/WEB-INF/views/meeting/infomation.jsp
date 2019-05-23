@@ -36,9 +36,9 @@ pageContext.setAttribute("ctx", path);
 							    <td>${info.name}</td>
 							    <td>
 							      <c:choose>
-		                             <c:when test="${info.state=='审核通过' }">
-		                                 <input type="hidden" id="${s.count }" value="${info.starttime },${info.id}">
-		                                                          已开始：<span id="_d${info.id }">00</span>  
+		                             <c:when test="${info.state=='正进行' }">
+		                                 <input type="hidden" id="${s.count }" value="${info.endtime },${info.id}">
+		                                                          距结束： 
 										        <span id="_h${info.id }">00</span>  
 										        <span id="_m${info.id }">00</span>  
 										        <span id="_s${info.id }">00</span> 
@@ -122,13 +122,13 @@ function countTime() {
 	             //定义变量 d,h,m,s保存倒计时的时间  
 	             var d,h,m,s;  
 	             if (leftTime>=0) {  
-	                 d = Math.floor(leftTime/1000/60/60/24);  
+	               //  d = Math.floor(leftTime/1000/60/60/24);  
 	                 h = Math.floor(leftTime/1000/60/60%24);  
 	                 m = Math.floor(leftTime/1000/60%60);  
 	                 s = Math.floor(leftTime/1000%60);                     
 	             }  
 	             //将倒计时赋值到div中  
-	             document.getElementById("_d"+strs[1]).innerHTML = d+"天";  
+	            // document.getElementById("_d"+strs[1]).innerHTML = d+"天";  
 	             document.getElementById("_h"+strs[1]).innerHTML = h+"时";  
 	             document.getElementById("_m"+strs[1]).innerHTML = m+"分";  
 	             document.getElementById("_s"+strs[1]).innerHTML = s+"秒";  

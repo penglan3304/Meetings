@@ -27,6 +27,7 @@ public class MailServiceImpl implements MailService{
 		mailMessage.setSubject(subject);
 		mailMessage.setText(content);
 		mailMessage.setTo(toMail);
+		mailMessage.setFrom("1741022905@qq.com");
     	mailSender.send(mailMessage);
         mailMessage.setSentDate(new Date());
     	return 1;
