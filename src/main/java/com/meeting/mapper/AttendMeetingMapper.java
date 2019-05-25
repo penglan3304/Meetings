@@ -7,9 +7,9 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
+import com.meeting.pojo.AttendInfo;
 import com.meeting.pojo.AttendMetting;
 
 
@@ -65,6 +65,10 @@ public interface AttendMeetingMapper {
 	List<AttendMetting> selectByStates(long id);
 	
 	
+	@Select("select state,count(*) as num from attendmeeting where meetingid=#{0} group by state")
+	List<AttendInfo> selectInfo(long meetingid);
+			
+			
 	@Update("UPDATE  attendmeeting SET absencereason=#{1},state='请假'"
 			+ " WHERE meetingid = #{0} and personid=#{2} ")
 	void updateStates(long id,String reason,long userid);

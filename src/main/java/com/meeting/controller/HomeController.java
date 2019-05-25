@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -18,11 +19,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.meeting.constant.CVal;
 import com.meeting.mapper.UserMapper;
 import com.meeting.mapper.UserRoleMapper;
+import com.meeting.pojo.AttendInfo;
+import com.meeting.pojo.AttendMetting;
 import com.meeting.pojo.JsonMsgBean;
 import com.meeting.pojo.Meeting;
 import com.meeting.pojo.MeetingRoom;
@@ -31,6 +35,7 @@ import com.meeting.pojo.User;
 import com.meeting.pojo.UserRole;
 import com.meeting.utils.PageResult;
 import com.meeting.utils.SecurityCode;
+import com.meeting.service.AttendMeetingService;
 import com.meeting.service.MailService;
 import com.meeting.service.MeetingRoomService;
 import com.meeting.service.MeetingService;
@@ -49,8 +54,6 @@ public class HomeController {
 	private UserRoleMapper userrolemapper;
 	@Autowired
 	private MeetingRoomService meetingroomService;
-	@Autowired
-	private MenuService menuService;
 	
 	@Autowired
 	private MeetingService meetingService;
@@ -65,12 +68,22 @@ public class HomeController {
 	public String home(HttpSession session,Model model) 
 	{
 		List<Meeting> meeting=meetingService.information();
+		List<Map<String,Object>> ameetings=meetingService.attendendInfo();
 		List<MeetingRoom> meetingroomlist=meetingroomService.meetingroom();
 		session.setAttribute("information_", meeting);
 		model.addAttribute("infos", meeting);
+		model.addAttribute("endmeetings", ameetings);
 		model.addAttribute("leng_", meeting.size());
 		session.setAttribute("informations_", meetingroomlist);
 		return "home/show";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/endInfo/show")
+	public List<Map<String,Object>> endInfo() 
+	{
+		List<Map<String,Object>> ameetings=meetingService.attendendInfo();
+		return ameetings;
 	}
 	
 	@RequestMapping(value = "/welcome", method = RequestMethod.GET)
@@ -184,7 +197,7 @@ public class HomeController {
 						else if(securitycode.equals(session.getAttribute("randCheckCode").toString()))
 						{
 							//记住密码
-							String loginInfo = phone + "," + password;
+							String loginInfo = phone + "_" + password;
 							Cookie userCookie = new Cookie("loginInfo", loginInfo);
 							if("1".equals(rememberMe)||"on".equals(rememberMe))
 							{
@@ -212,7 +225,7 @@ public class HomeController {
 							return "index";
 						}
 					}catch(Exception e) {
-						model.addAttribute("registResult", "验证码已失效");
+						model.addAttribute("registResult", "异常错误");
 						return "index";
 					}
 					

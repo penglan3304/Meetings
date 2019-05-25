@@ -27,6 +27,7 @@ import com.meeting.mapper.MeetingRoomMapper;
 import com.meeting.mapper.NotifyMapper;
 import com.meeting.mapper.UserMapper;
 import com.meeting.pojo.AddMeeting;
+import com.meeting.pojo.AttendInfo;
 import com.meeting.pojo.AttendMetting;
 import com.meeting.pojo.Depart;
 import com.meeting.pojo.Meeting;
@@ -105,6 +106,29 @@ public class MeetingServiceImpl implements MeetingService{
 		return meeting;
 	}
 	
+	public List<Meeting> endmeeting(){
+		String sql="select a.*,b.name as meetingroom from meeting a,meetingroom b WHERE a.meetingroomid=b.id  and a.state='已结束' order "
+				+ "by unix_timestamp(a.starttime) asc";
+		List<Meeting> meeting=meetingmapper.selectBySql(sql);
+		return meeting;
+	}
+	
+	
+	public List<Map<String,Object>> attendendInfo(){
+		String sql="select a.*,b.name as meetingroom from meeting a,meetingroom b WHERE a.meetingroomid=b.id  and a.state='已结束' order "
+				+ "by unix_timestamp(a.starttime) asc";
+		List<Meeting> meeting=meetingmapper.selectBySql(sql);
+		List<Map<String,Object>> attendinfos=new ArrayList<>();
+		for(int i=0;i<meeting.size();i++) {
+			List<AttendInfo> attendinfo=attendmeetingmapper.selectInfo(meeting.get(i).getId());
+			Map<String,Object> datasource=new LinkedHashMap<String,Object>();
+			datasource.put("id",meeting.get(i).getId());
+			datasource.put("name",meeting.get(i).getName());
+	        datasource.put("data",attendinfo);
+	        attendinfos.add(datasource);
+		}
+		return attendinfos;
+	}
 	
 	@Override
 	public int del(List<Integer> id,int meetingroomid) {
@@ -648,6 +672,20 @@ public class MeetingServiceImpl implements MeetingService{
 	public Object listen(User user) {
 		String sql="select a.* from meeting a,meetingparam b where a.isanother='是' and a.id=b.meetingid and state='审核通过' and b.departs!="+user.getDepartid()+" and createname!="+"'"+user.getUsername()+"'";
 		List<Meeting> meetings=meetingmapper.selectBySql(sql);
+		Map<String,Object> datasource=new LinkedHashMap<String,Object>();
+        datasource.put("code",0);
+        datasource.put("msg","");
+        datasource.put("count",meetings.size());
+        datasource.put("data",meetings);
+		return datasource;
+	}
+	
+	
+	
+	//已结束会议
+	public Object end() {
+		String sql="select a.*,b.name as meetingname from attendmeeting a,meeting b where a.meetingid=b.id and b.state='已结束' ";
+		List<AttendMetting> meetings=attendmeetingmapper.selectBySql(sql);
 		Map<String,Object> datasource=new LinkedHashMap<String,Object>();
         datasource.put("code",0);
         datasource.put("msg","");

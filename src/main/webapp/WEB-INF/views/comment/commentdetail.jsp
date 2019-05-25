@@ -129,7 +129,7 @@ pageContext.setAttribute("ctx", path);
           			
           		},
           		error:function(){
-          			alert("删除错误");
+          			alert("评论错误");
           		}
         	});
     	}

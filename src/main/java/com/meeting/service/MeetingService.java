@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.google.zxing.WriterException;
 import com.meeting.pojo.AddMeeting;
+import com.meeting.pojo.AttendMetting;
 import com.meeting.pojo.Meeting;
 import com.meeting.pojo.MeetingParam;
 import com.meeting.pojo.User;
@@ -49,5 +50,7 @@ public interface MeetingService {
 	public Object hasattended(User user,String starttime,String endtime);
 	public MeetingParam meetingparam(int meetingid);
 	public PageResult comment(int start, int limit );
+	public List<Meeting> endmeeting();
+	public List<Map<String,Object>> attendendInfo();
 
 }

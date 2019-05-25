@@ -46,7 +46,10 @@ public class CommentServiceImpl implements CommentService{
 		comment.setCommenttime(commenttime);
 		comment.setContent(content);
 		comment.setReplayid(replayid);
-		comment.setReplayname(comments.getUsername());
+		if(null!=comments) {
+			comment.setReplayname(comments.getUsername());
+		}
+		
 		commentmapper.insert(comment);
 		return 0;
 	}

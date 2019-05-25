@@ -127,15 +127,14 @@ layui.use(['laydate','form'], function(){
             ,method:'POST'
             ,cols: [
                 [
-                	{checkbox: true}
-                    ,{field:'name', title:'会议名称',height:38}
+                	{field:'name', title:'会议名称',height:38}
                     ,{field:'meetingroom', title:'会议室',height:38}
                     ,{field:'starttime', title:'开始时间',height:38}
-                    ,{field:'endtime', title:'结束时间',height:38}
+                    ,{field:'endtime', title:'结束时间',height:38}/* 
                     ,{field:'createtime', title:'创建时间',height:38}
-                    ,{field:'modifytime', title:'修改时间',height:38}
+                    ,{field:'modifytime', title:'修改时间',height:38} 
                     ,{field:'state', title:'状态 ',height:38}
-                    ,{field:'createname', title:'创建人',height:38}
+                    ,{field:'createname', title:'创建人',height:38} */
                     ,{field:'reason', title:'未通过原因',height:38}
                     ,{field:'isanother', title:'是否允许旁听',height:38}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo',width:120}

@@ -121,19 +121,123 @@ pageContext.setAttribute("ctx", path);
 <div style="border:1px solid #E0E0E0;width:640px;margin-left:20px;float:left;background-color:#54b5ff;height:500px">
     <div style="margin-bottom: 16px;text-align:center">
         <div class="layui-inline" >
-        <p style="font-size:30px"><strong>实时会议室信息</strong></p>
-        <table class="layui-hide"  id="meetingroomlist" lay-filter="meetingroomlist"></table>
+        <p style="font-size:30px"><strong>参会信息显示</strong></p>
+ 
+        <!-- <table class="layui-hide"  id="meetingroomlist" lay-filter="meetingroomlist"></table> -->
   	    </div>
     </div>
+    
+    <div class="layui-carousel" id="test3" >
+      <div carousel-item >
+          <c:forEach items="${endmeetings }" var="infos">
+           <div id="main_${infos.id }" style="width:500px;height:400px;text-align:center">
+           
+           </div>
+          </c:forEach>
+      </div>
+    </div>  
 </div>    
 <script src="${ctx}/js/jquery.min.js"></script>
 <script src="${ctx}/layui/layui.js"></script>
+<script src="${ctx}/js/echarts.min.js"></script>
+<script>
+window.onload = function() {
+	//setInterval(function() { 
+		 $.ajax({
+			   url:"${ctx}/endInfo/show.do",
+			   type:"post",
+			   async:true,
+			   success:function(data){
+				  for(var i=0;i<data.length;i++){
+					  var myChart = echarts.init(document.getElementById('main_'+data[i].id));
+					  var categories=["已签到","请假","未参加"];
+					  var values=[];
+					  for(var j=0;j<data[i].data.length;j++){
+						  categories.push(data[i].data[j].state);
+						  values.push(data[i].data[j].num);
+					  }
+					  var option={
+						 		title : {
+						 		    text: data[i].name,
+						 		    subtext: '饼图',
+						 		    x:'center'
+						 		  },
+						 		  tooltip : {
+						 		    trigger: 'item',
+						 		    formatter: "{a} <br/>{b} : {c} ({d}%)"
+						 		  },
+						 		  legend: {
+						 		    orient : 'vertical',
+						 		    x : 'left',
+						 		    data:categories,
+						 		  },
+						 		  toolbox: {
+						 		    show : true,
+						 		    feature : {
+						 		      restore : {show: true},
+						 		    }
+						 		  },
+						 		/*   calculable : true,
+						 			 	// 高亮样式。
+						 		        emphasis: {
+						 		            itemStyle: {
+						 		                // 高亮时点的颜色。
+						 		                color: 'yellow'
+						 		            }/* ,
+						 		            label: {
+						 		                show: true,
+						 		                // 高亮时标签的文字。
+						 		                formatter: 'This is a emphasis label.'
+						 		            }
+						 		        }, */ 
+						 		        series : [
+						 			        {
+						 			            name: '详细人数',
+						 			            type: 'pie',
+						 			            radius: '55%',
+						 			            /* data:[
+						 			                {value:235, name:'视频广告'},
+						 			                {value:274, name:'联盟广告'},
+						 			                {value:310, name:'邮件营销'},
+						 			                {value:335, name:'直接访问'},
+						 			                {value:400, name:'搜索引擎'}
+						 			            ] */
+						 			            
+						 			            data: (function(){
+						                             var res = [];
+						                              var len = values.length;
+						                             while (len--) { 
+						                                 res.push({
+						                                 name: categories[len],
+						                                 value: values[len]
+						                             });
+						                             }
+						                             return res;
+						                             })()
+						 			        }
+						 			    ]
+						 }
+						 myChart.setOption(option);
+					   }
+					  
+				  }
+				   
+				   
+				   
+				  
+		}); 
+	//},6000);
+};
+
+</script>
 <script>
 layui.use(['tree','table','layer','form','upload'], function(){
     var $ = layui.$;
     var table = layui.table;
     var layer = layui.layer;
-    table.render({
+});
+
+/*     table.render({
         elem: '#meetingroomlist'
         ,url:'/meetings/meetingroom/meetingroomlist.do'
         ,title: '会议列表'
@@ -149,7 +253,7 @@ layui.use(['tree','table','layer','form','upload'], function(){
             ]
         ]
         ,page: true
-    });
+    }); */
     
 /* function countTime() {  
 	 var date = new Date();  
@@ -195,19 +299,7 @@ show.innerHTML = t;
 };
 
  */
-window.onload = function() {
-	setInterval(function() { 
-		table.reload('meetingroomlist', {
-			 where: {
-				 
-	            }
-	   	 	,page: {
-	        	//curr: 1 //重新从第 1 页开始
-	    	}
-	    }); 
-	},6000);
-};
-});
+
 function detail(id){
  	 $.ajax({
     		url: "${ctx}/meeting/detail.do?id="+id,
@@ -236,7 +328,7 @@ function detail(id){
          		  });
    			}
  		  });
- }
+ } 
 </script>
 <script>
 layui.use('carousel', function(){
@@ -254,6 +346,16 @@ layui.use('carousel', function(){
         elem: '#test2'
         ,width: '640' //设置容器宽度
         ,height: '300'
+        ,arrow: 'none' //始终显示箭头
+        ,anim:'fade'
+        ,indicator:'none'
+        ,interval:6000//,anim: 'fade' //切换动画方式
+      });
+    
+    carousel.render({
+        elem: '#test3'
+        ,width: '500' //设置容器宽度
+        ,height: '400'
         ,arrow: 'none' //始终显示箭头
         ,anim:'fade'
         ,indicator:'none'
