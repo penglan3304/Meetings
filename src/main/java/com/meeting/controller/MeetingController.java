@@ -6,7 +6,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -355,6 +358,15 @@ public class MeetingController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/getCurrentTime")
+	public String getCurrentTime() {
+		Date date=new Date();
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String dates=sdf.format(date);
+		return dates;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/meetingstate")
 	public int meetingstate(int id,int fg) {
 		int result=meetingService.meetingstate(id, fg);
@@ -562,10 +574,17 @@ public class MeetingController {
 		User user=(User)session.getAttribute("users");
 		String subject=user.getUsername()+"，您好!";
 		String toMail=user.getEmail();
-		String bottom="会议签到系统";
+		Meeting meeting=meetingService.meeting(id);
+		String bottom=meeting.getName();
 		String content=id+","+user.getId()+","+flag;
-		String path="D:/img";
-		File file1 = new File(path,"sign"+user.getUsername()+user.getId()+".jpg");
+		String path="/app/file/qrCode/"+"sign"+user.getUsername()+user.getId()+".jpg";
+		
+		File file1 = new File(path);
+		if(!file1.exists()) {
+			file1.mkdir();
+		}
+		/*String path="D:/img";
+		File file1=new File(path,"sign"+user.getUsername()+user.getId()+".jpg");*/
 		 Map<EncodeHintType,Object> hints = new HashMap<EncodeHintType,Object>();
 		 hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
 		 hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
@@ -574,9 +593,9 @@ public class MeetingController {
 			int height=250;
 			BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, height,width,hints);
 			Zxing.writeToFile(bitMatrix, "jpg", file1,bottom);
-		String picturePath=path+"/"+"sign"+user.getUsername()+user.getId()+".jpg";
+	/*	String picturePath=path+"/"+"sign"+user.getUsername()+user.getId()+".jpg";*/
 		//int result=maliService.sendSimpleMail(subject, picturePath, toMail);
-		int result=maliService.sendPictureMail(subject, "", toMail, picturePath);
+		int result=maliService.sendPictureMail(subject, "", toMail, path);
 		return result;
 	}
 	

@@ -298,10 +298,11 @@ function settime(obj) { //发送验证码60秒倒计时
 	        	document.getElementById("type1").style.display = 'block';
 			}*/
 			var str=getCookie("loginInfo");
-			str = str.substring(1,str.length-1);
-			var phone = str.split(",")[0]; 
 			
-			var password = str.split(",")[1]; 
+			str = str.substring(0,str.length);
+			var phone = str.split("_")[0]; 
+			
+			var password = str.split("_")[1]; 
 			//自动填充账号和密码
 			$("#phone").val(phone);
 			$("#password").val(password);
