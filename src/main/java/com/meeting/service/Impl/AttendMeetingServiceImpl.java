@@ -36,7 +36,8 @@ public class AttendMeetingServiceImpl implements AttendMeetingService{
 		
 		List<AttendMetting> meetings=null;
 		if(!attendperson.equals("")) {
-			meetings=attendmapper.selectBymeetingidN(id,attendperson);
+			String sql="select * from attendmeeting where meetingid="+id+" and attendperson like"+"'%"+attendperson+"%'";
+			meetings=attendmapper.selectBySql(sql);
 		}else {
 			meetings=attendmapper.selectBymeetingid(id);
 		}
