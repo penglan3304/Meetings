@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -554,7 +555,7 @@ public class MeetingController {
         if (!file.exists()) {
             file.mkdir();
         }
-        File qrCodeFile = new File(path ,"sign" + user.getUsername() + user.getId() + ".jpg");
+        File qrCodeFile = new File(path, "sign" + user.getUsername() + user.getId() + ".jpg");
 		/*String path="D:/img";
 		File file1=new File(path,"sign"+user.getUsername()+user.getId()+".jpg");*/
         Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
@@ -563,8 +564,8 @@ public class MeetingController {
         hints.put(EncodeHintType.MARGIN, 2);
         int width = 250;
         int height = 250;
-        BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, height, width, hints);
-        Zxing.writeToFile(bitMatrix, "jpg", qrCodeFile, bottom);
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(new String(content.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1), BarcodeFormat.QR_CODE, height, width, hints);
+        Zxing.writeToFile(bitMatrix, "jpg", qrCodeFile, new String(bottom.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
         /*	String picturePath=path+"/"+"sign"+user.getUsername()+user.getId()+".jpg";*/
         //int result=maliService.sendSimpleMail(subject, picturePath, toMail);
         int result = maliService.sendPictureMail(subject, "", toMail, qrCodeFile.getPath());
