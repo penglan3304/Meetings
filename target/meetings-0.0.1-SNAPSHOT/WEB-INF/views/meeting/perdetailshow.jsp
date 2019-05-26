@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  <div style="width:100%;height:46px;background-color: #f2f2f2;">
 <div style="margin-bottom: 16px;">
   <div class="layui-inline" >
@@ -40,7 +40,7 @@ pageContext.setAttribute("ctx", path);
         
        table.render({
             elem: '#perdetaillist'
-            ,url:'/meetings/meeting/perdetaillist.do?id='+id_
+            ,url:'${ctx}/meeting/perdetaillist.do?id='+id_
             ,title: '参会信息列表'
             ,height: 550
             ,method:'POST'

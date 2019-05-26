@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
 <div style="margin-bottom: 16px;">
   <div class="layui-inline" >
     <form class="layui-form" style="margin-top:5px">
@@ -53,7 +53,7 @@ layui.use(['tree','table','layer','form'], function(){
         var form = layui.form;
         table.render({
             elem: '#meetingroomlist'
-            ,url:'/meetings/meetingroom/meetingroomlist.do'
+            ,url:'${ctx}/meetingroom/meetingroomlist.do'
             ,title: '会议列表'
             ,height: 550
             ,method:'POST'
@@ -110,10 +110,12 @@ layui.use(['tree','table','layer','form'], function(){
                   		if(data==1){
                    			layer.msg("删除失败", {icon: 5});                        
                   		}else{    
-                      		    obj.del();
-                     			layer.closeAll();
-			                    location.reload();
-                 			 }
+                  			layer.alert('删除成功',function(index){
+                  				obj.del();
+                  				location.reload();
+         					   layer.close(index);
+         				   });
+                 		 }
               		},
               		error:function(){
               			layer.msg("删除失败", {icon: 5}); 

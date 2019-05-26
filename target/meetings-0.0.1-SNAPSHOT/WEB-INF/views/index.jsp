@@ -62,7 +62,7 @@ pageContext.setAttribute("ctx", path);
 		   </div>
 		   
 		 <div  style="width: 353px;margin-top: 20px;padding-left:35px;padding-right:0px;">
-		      <button  name="savebtn"  type="submit" class="btn btn-info btn-lg " style="width: 100%;height:50px;color: white;font-family: 微软雅黑;font-size: 20px;background-image: url('/meetings/img/login_submit.png');background-repeat: no-repeat;">登录</button>
+		      <button  name="savebtn"  type="submit" class="btn btn-info btn-lg " style="width: 100%;height:50px;color: white;font-family: 微软雅黑;font-size: 20px;background-image: url('${ctx}/img/login_submit.png');background-repeat: no-repeat;">登录</button>
 		  </div>
 		      
 		</form:form>
@@ -103,7 +103,7 @@ pageContext.setAttribute("ctx", path);
 		   </div>
 		   
 		 <div  style="width: 353px;margin-top: 20px;padding-left:35px;padding-right:0px;">
-		      <button  name="savebtn"  type="submit" class="btn btn-info btn-lg " style="width: 100%;height:50px;color: white;font-family: 微软雅黑;font-size: 20px;;background-image: url('/meetings/img/login_submit.png');background-repeat: no-repeat;">登录</button>
+		      <button  name="savebtn"  type="submit" class="btn btn-info btn-lg " style="width: 100%;height:50px;color: white;font-family: 微软雅黑;font-size: 20px;;background-image: url('${ctx}/img/login_submit.png');background-repeat: no-repeat;">登录</button>
 		  </div>
 		</form:form>
 	  </div>   
@@ -298,10 +298,11 @@ function settime(obj) { //发送验证码60秒倒计时
 	        	document.getElementById("type1").style.display = 'block';
 			}*/
 			var str=getCookie("loginInfo");
-			str = str.substring(1,str.length-1);
-			var phone = str.split(",")[0]; 
 			
-			var password = str.split(",")[1]; 
+			str = str.substring(0,str.length);
+			var phone = str.split("_")[0]; 
+			
+			var password = str.split("_")[1]; 
 			//自动填充账号和密码
 			$("#phone").val(phone);
 			$("#password").val(password);

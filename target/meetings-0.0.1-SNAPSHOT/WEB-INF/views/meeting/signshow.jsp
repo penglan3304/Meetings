@@ -16,15 +16,17 @@
 <head>
 <title>QRCODE</title>
 </head>
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
 <script src="${urlPath}/js/jquery.min.js"></script>
 <script src="${urlPath}/js/jquery.qrcode.min.js"></script>
-<script src="${ctx}/layui/layui.js"></script>
+<script src="${urlPath}/layui/layui.js"></script>
 <body>
 <video id="video" autoplay style="display: block;margin:1em auto;width:400px;height:400px;"></video>
+<div style="text-align:center">
 <span id="msgs"></span>
-<span >应到：${counts } 人 </span>
-实到：<span id="count"></span>人
- <table  style="margin:0px 0" id="attlist" lay-filter="attdlist"></table>
+应到：<span >${counts }</span>人
+实到：<span id="msg">${count }</span>人</div>
+ <table  style="margin:0px 0" id="attdlist" lay-filter="attdlist"></table>
 <script>
   window.addEventListener("DOMContentLoaded", function () {
     var video = document.getElementById("video"), canvas, context;
@@ -101,25 +103,25 @@
     		      dataType:"json",
     		      success:function(data){
     		    	  if(data==0){
+    		    		  var count=$("#msg").val();
     		    		  count++;
-    		    		  $("#count").val(count);
-    		    		  $("#msgs").html("<div style='font-size:20px;color:red;margin-left:300px'>签到成功</div>");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>签到成功</div>");
+    		    		  $("#msg").val(count);
     		    	  }
     		    	  if(data==1){
-    		    		  alert("无此用户");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>无此用户</div>");
     		    	  }
     		    	  if(data==2){
-    		    		  alert("参会错误");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>参会错误</div>");
     		    	  }
     		    	  if(data==3){
-    		    		  alert("二维码错误");
-    		    		  $("#msgs").html("<div style='font-size:20px;color:red;margin-left:300px'>二维码错误</div>");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>二维码错误</div>");
     		    	  }
     		    	  if(data==4){
-    		    		  alert("欢迎旁听");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>欢迎旁听</div>");
     		    	  }
     		    	  if(data==5){
-    		    		  alert("请不要重复签到");
+    		    		  $("#msgs").html("<div style='font-size:20px;color:red'>请勿重复签到</div>");
     		    	  }
     		      }
     	   });
@@ -161,14 +163,14 @@
   }
    
  </script> 
-  <script>
+ <!--  <script>
 layui.use(['tree','table','layer','form','upload'], function(){
     var $ = layui.$;
     var table = layui.table;
     var layer = layui.layer;
     table.render({
         elem: '#attdlist'
-        ,url:'/meetings/meeting/attmeetinglist.do'
+        ,url:'${ctx}/meeting/attmeetinglist.do'
         ,title: '会议列表'
         ,width:600
         ,method:'POST'
@@ -197,7 +199,7 @@ layui.use(['tree','table','layer','form','upload'], function(){
     };
     });
     
-    </script>
+    </script> -->
 </body>
   
 </html>

@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  
  <div class="layui-card">
   <div class="layui-card-header" style="font-size:20px;color:#54b5ff">审核不通过</div>
@@ -121,21 +121,20 @@ layui.use(['laydate','form'], function(){
         
        table.render({
             elem: '#checknopasslist'
-            ,url:'/meetings/meeting/checkednopass.do'
+            ,url:'${ctx}/meeting/checkednopass.do'
             ,title: '会议列表'
             ,height: 550
             ,method:'POST'
             ,cols: [
                 [
-                	{checkbox: true}
-                    ,{field:'name', title:'会议名称',height:38}
+                	{field:'name', title:'会议名称',height:38}
                     ,{field:'meetingroom', title:'会议室',height:38}
                     ,{field:'starttime', title:'开始时间',height:38}
-                    ,{field:'endtime', title:'结束时间',height:38}
+                    ,{field:'endtime', title:'结束时间',height:38}/* 
                     ,{field:'createtime', title:'创建时间',height:38}
-                    ,{field:'modifytime', title:'修改时间',height:38}
+                    ,{field:'modifytime', title:'修改时间',height:38} 
                     ,{field:'state', title:'状态 ',height:38}
-                    ,{field:'createname', title:'创建人',height:38}
+                    ,{field:'createname', title:'创建人',height:38} */
                     ,{field:'reason', title:'未通过原因',height:38}
                     ,{field:'isanother', title:'是否允许旁听',height:38}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo',width:120}
@@ -191,11 +190,9 @@ layui.use(['laydate','form'], function(){
                   		      success: function(layero, index){
                   		    	    var body = layer.getChildFrame('body', index);
                   		    	    body.find('#title').val(data.name);
-                  		    	   // body.find('#place').val(data.meetingroom);
                   		    	    body.find('#starttime').val(data.starttime);
                   		    	    body.find('#endtime').val(data.endtime);
                   		    	    body.find('#checkperson').val(data.checkperson);
-                  		    	   // body.find('#depart').val(data.departname);
                   		    	   if(data.isanother=="是"){
                   		    		 body.find('#isanother').prop("checked", true);
                   		    	   }else{
@@ -204,9 +201,7 @@ layui.use(['laydate','form'], function(){
                   		    	  
                   		    	    
                   		    	    body.find('#departdiv').find("[lay-value='" +data.departs + "']").click();
-                  		    	    //form.render();
-                  		    	   // body.find('#checkpersondiv').find("[lay-value='" +data.userid + "']").click();
-                  		    	   // body.find('#placediv').find("[lay-value='" +data.meetingroomid + "']").click();
+                  		    	    body.find('#placediv').find("[lay-value='" +data.meetingroomid + "']").click();
                   		    	  
                   		    	  }
                   		  });

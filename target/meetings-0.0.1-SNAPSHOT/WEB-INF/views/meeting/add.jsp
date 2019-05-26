@@ -47,13 +47,13 @@ pageContext.setAttribute("ctx", path);
   <div class="layui-form-item">
     <label class="layui-form-label">会议时间</label>
       <div class="layui-input-inline" style="width:200px">
-         <input type="text" class="layui-input" id="starttime" >
+         <input type="text" class="layui-input" id="starttime" autocomplete="off" >
       </div>
       
       <div class="layui-input-inline" style="width:5px;line-height:36px">-</div>
  
       <div class="layui-input-inline" style="width:200px">
-        <input type="text" class="layui-input" id="endtime" style="margin-right:560px">
+        <input type="text" class="layui-input" id="endtime" style="margin-right:560px" autocomplete="off">
       </div>
  </div>
   
@@ -124,11 +124,8 @@ layui.use(['laydate','form','layer',], function(){
                  type: "post",
                  async: false,
                  success: function(data) {
-                    /* var jsonData = $.parseJSON(data);
-                     */
                      var jsonData=data;
                      var count = jsonData.count;
-                     
                      if (count != 0) {
                          var empList = jsonData.data;
                          var selectEmpHTML = "";
@@ -235,16 +232,16 @@ layui.use(['laydate','form','layer',], function(){
 		   async:true,
 		   success:function(data1){
 			   if(data1==0){
-				       layer.alert('添加成功',function(index){
+				   parent.layer.alert('添加成功',function(index){
 					   window.parent.location.reload();
-					   layer.closeAll();
+					   parent.layer.closeAll();
 				   });
 			   }
 		   },
 		   error:function(){
-			       layer.alert('添加出错',function(index){
+			   parent.layer.alert('添加出错',function(index){
 				   window.parent.location.reload();
-				   layer.closeAll();
+				   parent.layer.closeAll();
 			   });
 		   }
 	   })

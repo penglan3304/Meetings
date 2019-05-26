@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  
  <div class="layui-card">
   <div class="layui-card-header" style="font-size:20px;color:#54b5ff">会议旁听</div>
@@ -59,7 +59,10 @@ layui.use(['laydate','form'], function(){
 </script>
 <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+
+         {{#  if((new Date(d.starttime)>new Date())) { }}
         <a class="layui-btn layui-btn-xs" lay-event="attend">报名</a>
+       {{#  }  }}
       </script>
 <script>
     layui.use(['tree','table','layer','form','upload'], function(){
@@ -121,7 +124,7 @@ layui.use(['laydate','form'], function(){
         
        table.render({
             elem: '#listenlist'
-            ,url:'/meetings/meeting/listen.do'
+            ,url:'${ctx}/meeting/listen.do'
             ,title: '会议列表'
             ,height: 550
             ,method:'POST'

@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  
  <div class="layui-card">
   <div class="layui-card-header" style="font-size:20px;color:#54b5ff">待审核</div>
@@ -122,7 +122,7 @@ layui.use(['laydate','form'], function(){
         
        table.render({
             elem: '#meetinglist'
-            ,url:'/meetings/meeting/waitcheck.do'
+            ,url:'${ctx}/meeting/waitcheck.do'
             ,title: '会议列表'
             ,height: 550
             ,method:'POST'
@@ -183,8 +183,10 @@ layui.use(['laydate','form'], function(){
                 		dataType: "json",
                			success: function(data){            
                     		if(data==0){ 
-                    			layer.closeAll();
-			                    location.reload();
+                    			layer.alert('审核成功',function(index){
+                      				location.reload();
+             					   layer.close(index);
+             				   });
                     		}else{    
                     			layer.msg("审核失败", {icon: 5});   
                    			 }
@@ -211,8 +213,10 @@ layui.use(['laydate','form'], function(){
                     		if(data==1){
                      			layer.msg("审核不通过失败", {icon: 5});                        
                     		}else{    
-                       			layer.closeAll();
-			                    location.reload();
+                    			layer.alert('审核不通过成功',function(index){
+                      			location.reload();
+             					   layer.close(index);
+             				   });
                    			 }
                 		},
                 		error:function(){
