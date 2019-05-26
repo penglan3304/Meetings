@@ -13,7 +13,7 @@ public class QrCodeUtil {
 
 
     public static void main(String[] args) {
-        String path = "\\app\\file\\qrCode\\";
+        String path = "app/file/qrCode/";
         File file = new File(path);
         if (file.exists()) {
             file.mkdir();
