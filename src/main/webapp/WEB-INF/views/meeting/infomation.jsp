@@ -38,7 +38,7 @@ pageContext.setAttribute("ctx", path);
 							      <c:choose>
 		                             <c:when test="${info.state=='正进行' }">
 		                                 <input type="hidden" id="${s.count }" value="${info.endtime },${info.id}">
-		                                                          距结束： 
+		                                        <span id="infoshow_${info.id }"></span>
 										        <span id="_h${info.id }">00</span>  
 										        <span id="_m${info.id }">00</span>  
 										        <span id="_s${info.id }">00</span> 
@@ -114,10 +114,14 @@ function countTime() {
 	             var end = endDate.getTime();
 	           //时间差 
 	           if(end>now){
-	        	   var leftTime = end-now; 
+	        	   var leftTime = end-now;
+	        	   document.getElementById("infoshow_"+strs[1]).innerHTML ="距结束:";  
+	        	   
 	           }
 	           else{
 	        	   var leftTime =now-end; 
+	        	   document.getElementById("infoshow_"+strs[1]).innerHTML ="已超时:";
+	        	   document.getElementById("infoshow_"+strs[1]).style.color="red"
 	           }
 	             //定义变量 d,h,m,s保存倒计时的时间  
 	             var d,h,m,s;  

@@ -63,7 +63,7 @@ layui.use(['laydate','form'], function(){
         <a class="layui-btn layui-btn-xs" lay-event="startsign">开始签到</a>
        {{#  }  }}
       
-       {{#  if((d.state==='审核通过')&&(new Date(d.starttime)<new Date())&&(d.state!=='正进行') ) { }}
+       {{#  if((d.state==='审核通过')&&(new Date(d.endtime)>new Date())&&(new Date(d.starttime)<new Date())&&(d.state!=='正进行') ) { }}
         <a class="layui-btn layui-btn-xs" lay-event="startmeeting">开始会议</a>
        
        {{#  }  }}
