@@ -1,11 +1,7 @@
 package com.meeting.controller;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -23,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.meeting.constant.CVal;
 import com.meeting.pojo.AttendMetting;
 import com.meeting.pojo.JsonMsgBean;
 import com.meeting.pojo.Meeting;
