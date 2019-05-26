@@ -34,7 +34,7 @@ public interface MeetingService {
 	public PageResult notifydetail(User user);
 	public int notifydel(String ids);
 	public PageResult checked(User user,String starttime,String endtime);
-	public PageResult checkednopass(User user);
+	public PageResult checkednopass(User user,String starttime,String endtime);
 	public PageResult noattend(User user,String starttime,String endtime);
 	public PageResult absent(User user,String starttime,String endtime);
 	public int updatemeetings(Meeting paramlist);

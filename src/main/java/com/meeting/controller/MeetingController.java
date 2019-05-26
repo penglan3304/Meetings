@@ -506,9 +506,10 @@ public class MeetingController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/checkednopass")
-	public Object checkednopass(Model model, HttpSession session) {
+	public Object checkednopass(@RequestParam(value = "starttime", defaultValue = "")String starttime,
+			@RequestParam(value = "endtime", defaultValue = "")String endtime,Model model, HttpSession session) {
 		User user=(User)session.getAttribute("users");
-		Object pageResult = meetingService.checkednopass(user);
+		Object pageResult = meetingService.checkednopass(user,starttime,endtime);
 		return pageResult;
 	}
 	

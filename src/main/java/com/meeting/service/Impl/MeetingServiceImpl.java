@@ -260,7 +260,7 @@ public class MeetingServiceImpl implements MeetingService{
 				String sql="select a.*,d.name as meetingroom,c.departs  from meeting a,users b,meetingparam c,meetingroom d "
 						+ "WHERE a.id="+meetingparam.get(i).getMeetingid()+ " and c.meetingid=a.id and c.userid=b.id and a.meetingroomid=d.id and a.state='待审核'"
 								+ " and unix_timestamp(a.starttime) between "
-						+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(a.endtime) between"+"unix_timestamp('"+starttime+"')"
+						+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(a.endtime) between "+"unix_timestamp('"+starttime+"')"
 								+ "  and "+"unix_timestamp('"+endtime+"')"; 
 				if(null!=meetingmapper.selectBySql(sql)&&meetingmapper.selectBySql(sql).size()!=0) {
 				    waitcheck.add(meetingmapper.selectBySql(sql).get(0));
@@ -378,8 +378,19 @@ public class MeetingServiceImpl implements MeetingService{
 
 	
 	//被审核未通过会议
-		public PageResult checkednopass(User user) {
-			String sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state='审核不通过' and a.createname="+"'"+user.getUsername()+"'";
+		public PageResult checkednopass(User user,String starttime,String endtime) {
+			String sql="";
+			if(!starttime.equals("")&&!endtime.equals("")) {
+				sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state='审核不通过' and a.createname="+"'"+user.getUsername()+"'"
+						+ " and unix_timestamp(a.starttime) between "
+						+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"
+						+" and unix_timestamp(a.endtime) between "+"unix_timestamp('"+starttime+"')"
+						+ "  and "+"unix_timestamp('"+endtime+"')";
+			}else{
+				sql="select a.*,d.name as meetingroom from meeting a,meetingroom d WHERE a.meetingroomid=d.id and a.state='审核不通过' and a.createname="+"'"+user.getUsername()+"'";
+			}
+			
+			
 			List<Meeting> waitchecked=meetingmapper.selectBySql(sql);
 			PageResult pageresult=new PageResult();
 			pageresult.setCode(0);
@@ -545,18 +556,21 @@ public class MeetingServiceImpl implements MeetingService{
 	public PageResult noattend(User user,String starttime,String endtime) {
 		List<AttendMetting> attendmeeting=attendmeetingmapper.selectByState(user.getId(), "未报名");
 		List<Meeting> meetings=new ArrayList<Meeting>();
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date=new Date();
+		String dates=sdf.format(date);
 		String sql="";
 		if(attendmeeting.size()!=0) {
 			for(int i=0;i<attendmeeting.size();i++) {
 				if(!starttime.equals("")&&!endtime.equals("")) {
-						sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()
-							+ " and unix_timestamp(a.starttime) between "+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"
-								+" and unix_timestamp(a.endtime) between"+"unix_timestamp('"+starttime+"')"
+						sql="select * from meeting WHERE unix_timestamp(starttime)>"+"unix_timestamp('"+dates+"') and id="+attendmeeting.get(i).getMeetingid()
+							+ " and unix_timestamp(starttime) between "+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"
+								+" and unix_timestamp(endtime) between "+"unix_timestamp('"+starttime+"')"
 							+ "  and "+"unix_timestamp('"+endtime+"')";
 					
 				}
 				else {
-					sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid();
+					sql="select * from meeting WHERE unix_timestamp(starttime)>"+"unix_timestamp('"+dates+"') and id="+attendmeeting.get(i).getMeetingid();
 				}
 				if(meetingmapper.selectBySql(sql).size()!=0) {
 					meetings.add(meetingmapper.selectBySql(sql).get(0));
@@ -583,9 +597,9 @@ public class MeetingServiceImpl implements MeetingService{
 			for(int i=0;i<attendmeeting.size();i++) {
 				if(!starttime.equals("")&&!endtime.equals("")) {
 						sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()
-							+ " and unix_timestamp(a.starttime) between "
-								+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(a.endtime) between "
-							+"unix_timestamp('"+starttime+"')"
+							+ " and unix_timestamp(starttime) between "
+								+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(endtime) between "
+							+" unix_timestamp('"+starttime+"')"
 							+ "  and "+"unix_timestamp('"+endtime+"')";
 					
 				}
@@ -615,8 +629,8 @@ public class MeetingServiceImpl implements MeetingService{
 			for(int i=0;i<attendmeeting.size();i++) {
 				if(!starttime.equals("")&&!endtime.equals("")) {
 						sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()
-							+ " and unix_timestamp(a.starttime) between "
-								+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(a.endtime) between "
+							+ " and unix_timestamp(starttime) between "
+								+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(endtime) between "
 							+"unix_timestamp('"+starttime+"')"
 							+ "  and "+"unix_timestamp('"+endtime+"')";
 					
@@ -647,8 +661,8 @@ public class MeetingServiceImpl implements MeetingService{
 			for(int i=0;i<attendmeeting.size();i++) {
 				if(!starttime.equals("")&&!endtime.equals("")) {
 						sql="select * from meeting WHERE id="+attendmeeting.get(i).getMeetingid()+" and state='已结束'"
-							+ " and unix_timestamp(a.starttime) between "
-								+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(a.endtime) between "
+							+ " and unix_timestamp(starttime) between "
+								+"unix_timestamp('"+starttime+"') and "+"unix_timestamp('"+endtime+"')"+" and unix_timestamp(endtime) between "
 							+"unix_timestamp('"+starttime+"')"
 							+ "  and "+"unix_timestamp('"+endtime+"')";
 					

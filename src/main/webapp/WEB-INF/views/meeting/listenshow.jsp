@@ -59,7 +59,10 @@ layui.use(['laydate','form'], function(){
 </script>
 <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+
+         {{#  if((new Date(d.starttime)>new Date())) { }}
         <a class="layui-btn layui-btn-xs" lay-event="attend">报名</a>
+       {{#  }  }}
       </script>
 <script>
     layui.use(['tree','table','layer','form','upload'], function(){
