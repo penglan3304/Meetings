@@ -39,7 +39,7 @@ pageContext.setAttribute("ctx", path);
            <div style="margin-top:20px"> <a href="${ctx }/home.do"  style=" text-decoration:none; outline:none;margin-left:230px;height:30px">已有账号,直接登录</a>  </div>
           
            <div  style="width: 353px;margin-top: 20px;padding-left:35px;padding-right:0px;">
-		      <button id="save" name="save"  type="submit" class="btn btn-info btn-lg " style="width: 100%;height:50px;color: white;font-family: 微软雅黑;font-size: 20px;;background-image: url('/meetings/img/login_submit.png');background-repeat: no-repeat;">确定</button>
+		      <button id="save" name="save"  type="submit" class="btn btn-info btn-lg " style="width: 100%;height:50px;color: white;font-family: 微软雅黑;font-size: 20px;;background-image: url('${ctx}/img/login_submit.png');background-repeat: no-repeat;">确定</button>
 		  </div>
      </form> 
    </div>  

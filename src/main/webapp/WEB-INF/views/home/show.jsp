@@ -8,7 +8,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  <div class="layui-carousel" id="test1" >
       <div carousel-item >
            <div style="height:400px;width:1300px;margin-left:280px;margin-top:50px" class="layui-bg-green demo-carousel">
@@ -150,7 +150,7 @@ window.onload = function() {
 			   success:function(data){
 				  for(var i=0;i<data.length;i++){
 					  var myChart = echarts.init(document.getElementById('main_'+data[i].id));
-					  var categories=["已签到","请假","未参加"];
+					  var categories=[];
 					  var values=[];
 					  for(var j=0;j<data[i].data.length;j++){
 						  categories.push(data[i].data[j].state);
@@ -239,7 +239,7 @@ layui.use(['tree','table','layer','form','upload'], function(){
 
 /*     table.render({
         elem: '#meetingroomlist'
-        ,url:'/meetings/meetingroom/meetingroomlist.do'
+        ,url:'${ctx}/meetingroom/meetingroomlist.do'
         ,title: '会议列表'
         ,width:600
         ,method:'POST'

@@ -245,7 +245,7 @@ layui.use(['laydate','form','layer'], function(){
 		   success:function(data){
 			   if(data==0){
 				   parent.layer.alert('修改成功',function(index){
-					   location.reload();
+					   parent.window.location.reload();
 					   parent.layer.closeAll();
 				   });
 			   }

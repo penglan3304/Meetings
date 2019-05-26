@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  
  <div class="layui-card">
   <div class="layui-card-header" style="font-size:20px;color:#54b5ff">已审核</div>
@@ -132,21 +132,17 @@ layui.use(['laydate','form'], function(){
         
        table.render({
             elem: '#meetinglist'
-            ,url:'/meetings/meeting/checked.do'
+            ,url:'${ctx}/meeting/checked.do'
             ,title: '会议列表'
             ,height: 550
             ,method:'POST'
             ,cols: [
                 [
-                	{checkbox: true}
-                    ,{field:'name', title:'会议名称',height:38,width:100}
+                	{field:'name', title:'会议名称',height:38,width:100}
                     ,{field:'meetingroom', title:'会议室',height:38,width:100}
                     ,{field:'starttime', title:'开始时间',height:38,width:100}
                     ,{field:'endtime', title:'结束时间',height:38,width:100}
-                    ,{field:'createtime', title:'创建时间',height:38,width:100}
-                    ,{field:'modifytime', title:'修改时间',height:38,width:100}
                     ,{field:'state', title:'状态 ',height:38,width:100}
-                    ,{field:'createname', title:'创建人',height:38,width:100}
                     ,{field:'isanother', title:'是否允许旁听',height:38,width:100}
                     ,{fixed: 'right', title:'操作', toolbar: '#barDemo',width:280}
                 ]

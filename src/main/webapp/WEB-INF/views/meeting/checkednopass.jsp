@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  
  <div class="layui-card">
   <div class="layui-card-header" style="font-size:20px;color:#54b5ff">审核不通过</div>
@@ -121,7 +121,7 @@ layui.use(['laydate','form'], function(){
         
        table.render({
             elem: '#checknopasslist'
-            ,url:'/meetings/meeting/checkednopass.do'
+            ,url:'${ctx}/meeting/checkednopass.do'
             ,title: '会议列表'
             ,height: 550
             ,method:'POST'

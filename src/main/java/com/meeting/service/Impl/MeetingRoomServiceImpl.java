@@ -96,11 +96,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService{
 	public List<MeetingRoom> selectmeeting(String starttime,String endtime){
 		String sql="select * from meetingroom";
 		List<MeetingRoom> meetingrooms=meetingroommapper.selectBySql(sql);
-		String sql1="select a.* from meeting a,meetingroom b where a.meetingroomid=b.id and ('"+starttime+"' between  "
-				+ "unix_timestamp(a.starttime) and unix_timestamp(a.endtime) )or ('"+endtime+"' between  "
-				+ "unix_timestamp(a.starttime) and unix_timestamp(a.endtime)) or"
-				+ "('"+starttime+"'<unix_timestamp(a.starttime) and '"+endtime+"' between  "
-				+ "unix_timestamp(a.starttime) and unix_timestamp(a.endtime))";
+		String sql1="select a.* from meeting a where a.state!='已结束' and ((unix_timestamp('"+starttime+"') between  unix_timestamp(a.starttime) and unix_timestamp(a.endtime)) or (unix_timestamp('"+endtime+"') between  unix_timestamp(a.starttime) and unix_timestamp(a.endtime)) or (unix_timestamp('"+starttime+"')<unix_timestamp(a.starttime) and unix_timestamp('"+endtime+"')>unix_timestamp(a.endtime)))";
 		List<Meeting> meetings=meetingmapper.selectBySql(sql1);
 		for(int i=0;i<meetings.size();i++) {
 				for(int j=0;j<meetingrooms.size();j++) {

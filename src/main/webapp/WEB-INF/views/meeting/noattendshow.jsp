@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  
  <div class="layui-card">
   <div class="layui-card-header" style="font-size:20px;color:#54b5ff">待报名会议</div>
@@ -124,7 +124,7 @@ layui.use(['laydate','form'], function(){
         
        table.render({
             elem: '#noattendlist'
-            ,url:'/meetings/meeting/noattend.do'
+            ,url:'${ctx}/meeting/noattend.do'
             ,title: '会议列表'
             ,height: 550
             ,method:'POST'
@@ -217,8 +217,10 @@ layui.use(['laydate','form'], function(){
                 		dataType: "json",
                			success: function(data){            
                     		if(data==0){
-                    			layer.closeAll();
-			                    window.parent.location.reload();                 
+                    			layer.alert('请假成功',function(index){
+                      				location.reload();
+             					   layer.close(index);
+             				   });                
                     		}else{    
                        			
 			                    layer.msg("请假失败", {icon: 5});   

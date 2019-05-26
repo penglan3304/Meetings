@@ -7,7 +7,7 @@ pageContext.setAttribute("ctx", path);
 <style type="text/css">
     a:hover { text-decoration: underline; }/* 鼠标移动到链接上 */
 </style>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
 <body class="layui-layout-body" style="font-size:20px">
 <div class="layui-layout layui-layout-admin">
   <div class="layui-header">
@@ -35,7 +35,7 @@ pageContext.setAttribute("ctx", path);
   <ul >
       <li class="layui-nav-item"  style="float:left"><img src="<%=request.getContextPath()%>/img/logo.png" style="margin-right:560px"/> </li>
       <li class="layui-nav-item" id="first" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>首页</strong></a></li>
-      <!-- <li class="layui-nav-item" id="chatinfo" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>实时聊天</strong></a></li> -->
+     <!--  <li class="layui-nav-item" id="chatinfo" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>实时聊天</strong></a></li> -->
       
       <li class="layui-nav-item" id="meetinginfo" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>会议信息管理</strong></a></li>
       <li class="layui-nav-item" id="meetingManage" style="float:left;margin-top:25px"><a href="javascript:void(0);" style="margin-left:40px;font-size:20px;color:#1e2b88"><strong>会议管理</strong></a></li>
@@ -164,7 +164,7 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
 var userid=${userid};
 $('#chatinfo').on('click',function(){
 	 $.ajax({
-		   url:"${ctx}/user/chatptp.do?topic="+userid+"&msg=",
+		   url:"${ctx}/user/chatptps.do?topic="+userid+"&msg=",
 		   type:"post",
 		   async:true,
 		   success:function(data){

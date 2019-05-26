@@ -5,6 +5,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="${ctx}/layui/css/layui.css">
   <form class="layui-form" action=""  onsubmit="return validator(this)" >
   <div style="margin-left:150px;margin-top:30px">
@@ -22,8 +23,15 @@ pageContext.setAttribute("ctx", path);
     
     <div class="layui-form-item layui-form-text">
     <label class="layui-form-label">收消息</label>
-    <div class="layui-input-block" style="width:200px">
-      <textarea name="desc" id="chatinfo_" placeholder="请输入内容" class="layui-textarea"></textarea>
+    <div class="layui-input-block" style="width:200px;border: 1px solid #000;">
+      <ul>
+         <li>
+            <input type="text" name="title" id="chatinfo_" autocomplete="off" class="layui-input" readonly>
+          </li>
+      </ul>
+     <!--  <textarea name="desc" id="chatinfo_" placeholder="无内容" class="layui-textarea">
+      
+      </textarea> -->
     </div>
   </div>
   
@@ -46,12 +54,14 @@ layui.use(['laydate','form','layer'], function(){
 	  var laydate = layui.laydate;
 	  var form = layui.form;
 	  var userid="";
-	  
+	  var id=${user.id};
 	  form.on('select(userlist)', function (data) {
 		  userid = data.value;
 	  });
+	  
 	  $("#submit").on('click',function(){
 		  var msg=$("#msgs").val();
+		 /*  var name=${user.username}; */
 			if(userid.length==0){
 				alert("请选择接收方");
 				return false;
@@ -65,7 +75,11 @@ layui.use(['laydate','form','layer'], function(){
 				   type:"post",
 				   async:true,
 				   success:function(data){
-						  $("#chatinfo_").val(msg+data);
+					   if(data!=null){
+						 /*   $("ul").append("<li>"+name+"："+msg+"</li>"); */
+						  /*  $("ul").append("<li>"+data+"</li>"); */
+                           
+					   }
 				   },
 				   error:function(){
 					   layer.alert('添加出错',function(index){
@@ -74,6 +88,26 @@ layui.use(['laydate','form','layer'], function(){
 				   }
 			   })
 	  });
+	  
+	  
+	  window.onload = function() {
+			  setInterval(function() { 
+				  if($("#msgs").val().length != 0){
+					$.ajax({
+						   url:"${ctx}/user/chatptps.do?topic="+id+"&msg=",
+						   type:"post",
+						   async:true,
+						   success:function(data){
+							   $("ul").append("<li>"+data+"</li>");
+							  /*  $("#msgs").val(""); */
+						   }
+					 }); 
+				  }
+				},10000);
+			
+		 
+		};
+	  
 });
 
 </script>

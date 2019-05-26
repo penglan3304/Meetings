@@ -16,7 +16,7 @@
 <head>
 <title>QRCODE</title>
 </head>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
 <script src="${urlPath}/js/jquery.min.js"></script>
 <script src="${urlPath}/js/jquery.qrcode.min.js"></script>
 <script src="${urlPath}/layui/layui.js"></script>
@@ -170,7 +170,7 @@ layui.use(['tree','table','layer','form','upload'], function(){
     var layer = layui.layer;
     table.render({
         elem: '#attdlist'
-        ,url:'/meetings/meeting/attmeetinglist.do'
+        ,url:'${ctx}/meeting/attmeetinglist.do'
         ,title: '会议列表'
         ,width:600
         ,method:'POST'

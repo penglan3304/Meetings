@@ -8,7 +8,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  <div class="layui-card" style="background-color:#54b5ff;">
   <div class="layui-card-header" style="font-size:20px;color:#ffffff">实时会议信息</div>
   <div class="layui-card-body">

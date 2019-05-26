@@ -8,7 +8,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
 <body class="layui-layout-body" style="font-size:20px">
 <div class="layui-layout layui-layout-admin">
   <div class="layui-header">
@@ -77,10 +77,10 @@ $('#userManage').on('click',function(){
 <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
 
 
-<link rel="stylesheet" href="/meetings/layui/css/layui.css">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css">
  
 <script src="${ctx}/js/jquery.min.js"></script>
-<script src="/meetings/layui/layui.js"></script>
+<script src="${ctx}/layui/layui.js"></script>
 
 
 <title>Insert title here</title>

@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  <div class="layui-card">
   <div class="layui-card-header" style="font-size:20px;color:#54b5ff">待被审核</div>
 <div class="layui-card-body">
@@ -120,7 +120,7 @@ layui.use(['laydate','form'], function(){
         
        table.render({
             elem: '#meetinglist'
-            ,url:'/meetings/meeting/waitchecked.do'
+            ,url:'${ctx}/meeting/waitchecked.do'
             ,title: '会议列表'
             ,height: 550
             ,method:'POST'

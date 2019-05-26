@@ -5,7 +5,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
  <div style="width:100%;height:46px;background-color: #f2f2f2;">
 <div style="margin-bottom: 16px;">
   <div class="layui-inline" >
@@ -56,7 +56,7 @@ layui.use(['laydate','form'], function(){
         
        table.render({
             elem: '#userlist'
-            ,url:'/meetings/user/userlist.do'
+            ,url:'${ctx}/user/userlist.do'
             ,title: '会议列表'
             ,height: 550
             ,method:'POST'

@@ -4,7 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
- <%-- <link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
+ <%-- <link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
   <body>
      <ul class="layui-nav layui-nav-tree layui-nav-side">
   <li class="layui-nav-item layui-nav-itemed">
@@ -70,8 +70,8 @@ pageContext.setAttribute("ctx", path);
     <iframe src="${ctx}/meeting/information.do" width="100%"  height="600px"  frameborder="0" id="contentIframes"></iframe> 
 </div> 
  --%> 
- <link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
- <link href="/meetings/css/menu.css" rel="stylesheet" type="text/css" />
+ <link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
+ <link href="${ctx}/css/menu.css" rel="stylesheet" type="text/css" />
 <link href="http://www.lingshi.com/templates/default/css/reset.css" rel="stylesheet" type="text/css" />
 <style>
 .menu_sp .i-list { 

@@ -8,10 +8,10 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 pageContext.setAttribute("ctx", path);
 %>
-<link rel="stylesheet" href="/meetings/layui/css/layui.css" media="all">
-<link rel="stylesheet" href="/meetings/css/detail.css">
-<link rel="stylesheet" href="/meetings/css/detail1.css">
-<link rel="stylesheet" href="/meetings/css/sandalstrap.css">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="${ctx}/css/detail.css">
+<link rel="stylesheet" href="${ctx}/css/detail1.css">
+<link rel="stylesheet" href="${ctx}/css/sandalstrap.css">
 
 <div class="comment-box">
    <c:if test="${length!=0 }">
