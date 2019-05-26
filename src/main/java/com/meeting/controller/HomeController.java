@@ -225,7 +225,7 @@ public class HomeController {
 							return "index";
 						}
 					}catch(Exception e) {
-						model.addAttribute("registResult", "异常错误");
+						model.addAttribute("registResult", "验证码失效");
 						return "index";
 					}
 					
@@ -239,7 +239,7 @@ public class HomeController {
 			}
 			else
 			{
-				model.addAttribute("registResult", "用户名或密码错误");
+				model.addAttribute("registResult", "用户不存在");
 				return "index";
 			}
 		}
