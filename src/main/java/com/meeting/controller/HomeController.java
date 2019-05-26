@@ -92,7 +92,7 @@ public class HomeController {
 		User users=(User)session.getAttribute("users");
 		PageResult waitcheck=meetingService.waitcheck(users,"","");
 		PageResult waitchecked=meetingService.waitchecked(users,"","");
-		PageResult pageResult = meetingService.checkednopass(users);
+		PageResult pageResult = meetingService.checkednopass(users,"","");
 		PageResult pageResult1 = meetingService.noattend(users,"","");
 		PageResult pageResult2=meetingService.absent(users,"","");
         model.addAttribute("checkcount", waitcheck.getCount());
