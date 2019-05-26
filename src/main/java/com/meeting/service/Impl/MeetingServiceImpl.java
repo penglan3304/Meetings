@@ -710,6 +710,8 @@ public class MeetingServiceImpl implements MeetingService{
 	
 	public int meetingstate(int id,int fg) {
 		Meeting meeting=meetingmapper.selectById(id);
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date=new Date();
 		List<MeetingRoom> meetingroom=null;
 		List<Meeting> meetings=null;
 		int counta=0;
@@ -729,11 +731,13 @@ public class MeetingServiceImpl implements MeetingService{
 		}
 		if(fg==0) {
 			meeting.setState("正进行");
+			meeting.setStarttime(sdf.format(date));
 			meetingroom.get(0).setState("使用中");
 			meetingroommapper.update(meetingroom.get(0));
 		}
 		if(fg==1) {
 			meeting.setState("已结束");
+			meeting.setEndtime(sdf.format(date));
 			if(counta==meetings.size()) {
 				meetingroom.get(0).setState("空闲");
 				meetingroommapper.update(meetingroom.get(0));
