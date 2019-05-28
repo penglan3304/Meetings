@@ -90,8 +90,8 @@
     </bean>
 
     <!--注入RedisDao-->
-    <bean id="redisDao" class="com.meeting.cache.RedisDao">
-        <constructor-arg index="0" value="6379"/>
-        <constructor-arg index="1" value="47.100.202.75"/>
-    </bean>
+<!--    <bean id="redisDao" class="com.meeting.cache.RedisDao">-->
+<!--        <constructor-arg index="0" value="6379"/>-->
+<!--        <constructor-arg index="1" value="127.0.0.1"/>-->
+<!--    </bean>-->
 </beans>
